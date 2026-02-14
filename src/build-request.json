@@ -1,110 +1,77 @@
 {
   "kind": "build_request",
-  "title": "Fix remote video save failures by ensuring frontend↔backend snapshot API compatibility and reliable blob persistence",
-  "priority": "high",
+  "title": "Mirror reference webpage styling and polish the featured videos section",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-24",
-      "text": "Diagnose and fix the current \"Save failed\" behavior by verifying that the deployed Motoko canister exposes the exact Valentine snapshot APIs expected by the frontend remote-save client, and that those methods succeed end-to-end for both create and update flows (including video blob payloads).",
-      "target": "both",
+      "id": "REQ-36",
+      "text": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-5"
         ],
         "quotes": [
-          "The current problem is that when users click the \"save\" button, they receive a \"save failed\" message, indicating a lack of backend connectivity. You need to build a proper backend connection that allows users to save videos effectively"
+          "Your task is to create a new website that mirrors the design and layout of the provided webpage."
         ]
       },
       "acceptanceCriteria": [
-        "With Internet Identity signed in, clicking the Save button successfully creates a remote save (no \"save failed\" message).",
-        "When a saveId already exists, clicking Save successfully updates the existing remote save (no \"save failed\" message).",
-        "The frontend no longer hits runtime failures related to missing backend methods (e.g., \"... is not a function\") during save/restore.",
-        "The remote-save client (`frontend/src/lib/valentineRemoteProgress.ts`) can call the backend methods without type/interface mismatches at runtime."
+        "Landing, Videos, and Final Message pages present a cohesive visual system that matches the reference page’s overall layout and styling (colors, spacing, typographic scale, component shapes)",
+        "No third-party/copyrighted images, icons, or proprietary brand marks from the reference are copied directly into the new site",
+        "All user-facing text remains in English"
       ]
     },
     {
-      "id": "REQ-25",
-      "text": "Ensure remote-saved videos are actually persisted via the backend snapshot payload and can be restored for viewing by a different user/browser using the same shareable link (saveId-based restore), including correct reconstruction of the three video slots.",
-      "target": "both",
+      "id": "REQ-37",
+      "text": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-5"
         ],
         "quotes": [
-          "allow users to save videos effectively, making them accessible for different users to view"
+          "Example of how the video section might be structured:  - Video Section Title: \"Featured Videos\"",
+          "The video section of the new website should prominently feature the three provided video URLs."
         ]
       },
       "acceptanceCriteria": [
-        "After saving with at least one uploaded video, opening the app in a fresh browser profile/device using the generated shareable link restores the landing message, final message, the three video headings, and playable video previews for any saved videos.",
-        "Restored video previews do not rely on local `blob:` URLs from the original uploader session; restored videos are reconstructed from the backend snapshot blob data.",
-        "If no videos were saved, restore still succeeds and shows empty video slots with headings (no crashes)."
+        "Videos page displays the section title exactly as: “Featured Videos”",
+        "The three embedded videos use these exact URLs as sources: https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4, https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4, https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4",
+        "No UI is present that allows local video file uploads or replacing the provided URLs"
       ]
     },
     {
-      "id": "REQ-26",
-      "text": "Harden backend-side security for snapshot updates so only authenticated users can write, and only holders of the per-save write capability can update an existing save; ensure user-facing failures are returned in clear English and are surfaced by the existing frontend error normalization.",
-      "target": "backend",
+      "id": "REQ-38",
+      "text": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-5"
         ],
         "quotes": [
-          "Be cautious of common pitfalls such as ... neglecting user authentication ... Ensure that the solution adheres to best practices in backend development."
+          "Ensure that the website is responsive and compatible with various devices. Pay attention to the user experience, making navigation seamless and intuitive."
         ]
       },
       "acceptanceCriteria": [
-        "Any write operation (create snapshot, update snapshot, save global latest) requires Internet Identity authentication; unauthenticated calls fail with an English error message that the frontend maps to a clear prompt to log in.",
-        "Updating an existing snapshot with an incorrect write token fails with an English error message indicating lack of authorization (and does not modify stored state).",
-        "Updating with an incorrect expected version fails with an English version-conflict message (and does not modify stored state)."
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Add backend and frontend safeguards and user-facing error messages for oversized video payloads and backend storage failures, so \"save failed\" is replaced by actionable English messages (e.g., per-video/total size limit exceeded, storage/upload failure, backend unavailable).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "Please ensure that the solution takes into account scalability, security, and maintainability. It should also provide clear instructions for both the implementation and testing phases, along with any necessary code snippets or configurations.",
-          "Error Handling: Strategies for managing connectivity issues."
-        ]
-      },
-      "acceptanceCriteria": [
-        "When a user attempts to save videos larger than the configured limits, Save is blocked and the UI shows a specific English error (not a generic \"save failed\").",
-        "When the backend is unreachable or the actor is null, the UI shows \"Backend connection not available. Please refresh and try again.\" (or equivalent existing message) and does not lose in-memory edits.",
-        "When backend storage/upload fails for blob payloads, the UI surfaces a friendly English error message that helps the user retry or reduce video size."
-      ]
-    },
-    {
-      "id": "REQ-28",
-      "text": "Provide a concise, repo-local technical specification (as a markdown document committed to the project) describing the remote video save architecture on the Internet Computer for this app: problem statement, relevant components (frontend remote-save client, backend snapshot actor, blob storage), API surface, error handling, security model, and a step-by-step test plan to validate cross-user video restore.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "The solution should be structured as a detailed technical specification document, outlining the necessary steps to establish this backend connection. It should include sections for the problem description, required technologies, architecture design, API endpoints, and error handling procedures."
-        ]
-      },
-      "acceptanceCriteria": [
-        "A markdown technical spec document exists in the repo and includes: (1) problem description of the save failure, (2) architecture overview of snapshot + blob persistence, (3) list of backend methods and expected inputs/outputs, (4) error handling and common failure modes, (5) security/auth rules for reads vs writes, and (6) an implementation and testing checklist that a developer can follow.",
-        "All user-facing strings in the spec (examples/error messages) are in English."
+        "On small screens, videos are displayed in a single-column layout with readable headings and comfortable spacing",
+        "On larger screens, the videos use a multi-column/grid layout without overflow or clipped controls",
+        "Primary navigation controls remain easy to discover and activate on touch devices (no overlapping fixed elements blocking actions)",
+        "Videos remain playable with visible controls on Chrome, Firefox, Safari, and Edge"
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in `backend/main.mo`; do not introduce additional backend services or non-Motoko canisters.",
-    "Only create `backend/migration.mo` if an upgrade requires state migration (conditional migration policy).",
-    "Do not edit files under `frontend/src/components/ui` or other immutable frontend paths listed in SYSTEM_CONTEXT.",
-    "Do not add external databases, third-party auth providers, or websocket-based real-time infrastructure."
+    "Do not edit files in frontend/immutablePaths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose existing UI components instead.",
+    "Use English for any user-facing text.",
+    "Do not introduce third-party libraries outside the existing stack (React + TypeScript, Tailwind, shadcn, React Query).",
+    "Do not copy proprietary/copyrighted assets from the reference webpage; only recreate the look-and-feel using original styling and standard components.",
+    "Keep the three provided MP4 URLs exactly as provided; do not alter or proxy them through the backend."
   ],
   "nonGoals": [
-    "Adding any non-Internet-Computer database (PostgreSQL/MySQL/Mongo/Redis) or external object storage for videos.",
-    "Implementing third-party authentication providers (only Internet Identity is supported).",
-    "Implementing real-time updates via WebSockets/Socket.io (polling is acceptable and already in use)."
+    "Reintroducing local video upload functionality on the Videos page",
+    "Adding new backend persistence APIs or changing Motoko data models for this request",
+    "Implementing new authentication providers beyond Internet Identity",
+    "Pixel-perfect duplication of any copyrighted graphics or branding from the reference site"
   ],
   "imageRequirements": {
     "required": [],

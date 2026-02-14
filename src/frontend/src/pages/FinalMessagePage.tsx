@@ -1,70 +1,59 @@
 import { Textarea } from '@/components/ui/textarea';
-import { Heart } from 'lucide-react';
-import FloatingHearts from '@/components/FloatingHearts';
+import { Button } from '@/components/ui/button';
+import { Heart, Home } from 'lucide-react';
+import ValentineLayout from '@/components/ValentineLayout';
 
 interface FinalMessagePageProps {
   message: string;
   onMessageChange: (message: string) => void;
+  onBackToStart: () => void;
 }
 
-export default function FinalMessagePage({ message, onMessageChange }: FinalMessagePageProps) {
+export default function FinalMessagePage({ message, onMessageChange, onBackToStart }: FinalMessagePageProps) {
   return (
-    <div className="min-h-screen romantic-vibrant-bg relative overflow-hidden flex items-center justify-center p-4">
-      {/* Floating hearts around the box */}
-      <FloatingHearts />
+    <ValentineLayout>
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="w-full max-w-2xl">
+          <div className="glass-card rounded-2xl p-6 sm:p-8 lg:p-12 shadow-2xl">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                <Heart className="w-8 h-8 text-primary fill-current animate-pulse" />
+              </div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3">
+                Final Message
+              </h1>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                End with a heartfelt note that captures your feelings
+              </p>
+            </div>
 
-      {/* Central dark pink box */}
-      <div className="relative z-10 w-full max-w-2xl">
-        <div className="romantic-dark-bg rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-white/20 backdrop-blur-sm space-y-6">
-          {/* Heart icon */}
-          <div className="flex justify-center">
-            <Heart className="w-16 h-16 md:w-20 md:h-20 text-white fill-current animate-pulse" />
-          </div>
+            {/* Message Input */}
+            <div className="space-y-4 mb-8">
+              <label className="block text-sm font-medium text-foreground">
+                Your Final Words
+              </label>
+              <Textarea
+                value={message}
+                onChange={(e) => onMessageChange(e.target.value)}
+                placeholder="Write your final Valentine's message here..."
+                className="min-h-[200px] text-base sm:text-lg resize-none bg-white/50 dark:bg-black/20 border-2 focus:border-primary transition-colors"
+              />
+            </div>
 
-          {/* Editable message */}
-          <div className="space-y-4">
-            <label htmlFor="final-message" className="block text-sm font-medium text-white/80 text-center">
-              Your Final Message:
-            </label>
-            <Textarea
-              id="final-message"
-              value={message}
-              onChange={(e) => onMessageChange(e.target.value)}
-              className="min-h-[120px] text-lg resize-none bg-white/10 border-2 border-white/30 focus:border-white/60 rounded-2xl text-white placeholder:text-white/50"
-              placeholder="Write your heartfelt message..."
-            />
-          </div>
-
-          {/* Display message */}
-          <div className="pt-6 border-t-2 border-white/20">
-            <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center leading-relaxed">
-              {message}
-            </p>
-          </div>
-
-          {/* Decorative hearts */}
-          <div className="flex justify-center gap-4 pt-4">
-            <Heart className="w-6 h-6 text-white/60 fill-current" />
-            <Heart className="w-8 h-8 text-white fill-current" />
-            <Heart className="w-6 h-6 text-white/60 fill-current" />
+            {/* Action Button */}
+            <Button
+              onClick={onBackToStart}
+              size="lg"
+              variant="outline"
+              className="w-full text-base sm:text-lg py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+            >
+              <Home className="w-5 h-5 mr-2" />
+              Back to Start
+            </Button>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="absolute bottom-4 left-0 right-0 text-center text-sm text-white/70 z-10">
-        <p>
-          Built with <Heart className="inline w-4 h-4 fill-current text-white" /> using{' '}
-          <a
-            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-white transition-colors"
-          >
-            caffeine.ai
-          </a>
-        </p>
-      </footer>
-    </div>
+    </ValentineLayout>
   );
 }

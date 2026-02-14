@@ -1,99 +1,99 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remote video save reliability: frontend snapshot API compatibility, blob persistence restore, and actionable errors",
+  "title": "Valentine 3-page UI refresh to mirror reference styling and polish featured videos",
   "requirements": [
     {
-      "id": "REQ-24",
-      "summary": "Fix \"Save failed\" by aligning the frontend remote-save client with the deployed Valentine snapshot API surface and preventing runtime method/type mismatches during create/update flows (including video blob payloads).",
+      "id": "REQ-36",
+      "summary": "Align the 3-page Valentine site’s design system (colors, typography, spacing, component styling) to closely match the reference page without copying any copyrighted assets.",
       "acceptanceCriteria": [
-        "With Internet Identity signed in, clicking the Save button successfully creates a remote save (no \"save failed\" message).",
-        "When a saveId already exists, clicking Save successfully updates the existing remote save (no \"save failed\" message).",
-        "The frontend no longer hits runtime failures related to missing backend methods (e.g., \"... is not a function\") during save/restore.",
-        "The remote-save client (`frontend/src/lib/valentineRemoteProgress.ts`) can call the backend methods without type/interface mismatches at runtime."
+        "Landing, Videos, and Final Message pages present a cohesive visual system that matches the reference page’s overall layout and styling (colors, spacing, typographic scale, component shapes)",
+        "No third-party/copyrighted images, icons, or proprietary brand marks from the reference are copied directly into the new site",
+        "All user-facing text remains in English"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/valentineRemoteProgress.ts",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Audit and update the remote-save client to match the declared backend actor interface (create/update/get/version/global-latest) and harden runtime guards so missing methods and actor unavailability produce clear English errors instead of runtime crashes. Use the blob-storage ExternalBlob semantics consistently for snapshot payloads (create/update) and restores. Verify the component's usage instructions before implementing."
+          "description": "Refine global theme tokens (OKLCH variables), typographic defaults, and shared utility classes (e.g., section spacing, glass/blur surfaces) to mirror the reference’s overall look-and-feel while remaining original."
         },
         {
-          "path": "frontend/src/hooks/useActor.ts",
-          "operation": "modify",
-          "description": "Ensure the actor initialization/refresh behavior used by the save/restore flows is robust against identity changes and transient null actors (e.g., avoid stale actors across login/logout) so save calls do not fail due to actor lifecycle issues. Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/ValentineLayout.tsx",
+          "operation": "create",
+          "description": "Create a reusable page layout wrapper that standardizes background treatment, centered content width, consistent vertical rhythm, and shared header/footer styling across all three pages. Use existing shadcn-ui primitives (e.g., Button) where needed; verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/pages/LandingPage.tsx",
           "operation": "modify",
-          "description": "Update save/create/update orchestration to rely on the hardened remote-save client behavior, avoid throwing generic errors, and ensure UI state transitions (saving/saved/error) reflect real backend call outcomes without hitting \"... is not a function\" failures. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "summary": "Ensure remote-saved videos restore correctly from backend snapshot blob data (saveId-based share link) with correct reconstruction of all three video slots, independent of original uploader session blob URLs.",
-      "acceptanceCriteria": [
-        "After saving with at least one uploaded video, opening the app in a fresh browser profile/device using the generated shareable link restores the landing message, final message, the three video headings, and playable video previews for any saved videos.",
-        "Restored video previews do not rely on local `blob:` URLs from the original uploader session; restored videos are reconstructed from the backend snapshot blob data.",
-        "If no videos were saved, restore still succeeds and shows empty video slots with headings (no crashes)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/lib/valentineRemoteProgress.ts",
-          "operation": "modify",
-          "description": "Improve encoding/decoding and restore logic so the three video slots always reconstruct deterministically from the snapshot payload, and prefer blob-storage retrieval patterns (e.g., using ExternalBlob.getDirectURL when appropriate) while ensuring restored previews are playable in a fresh browser profile. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Harden the remote-first restore path for saveId-based links (and global-latest fallback) so restore always sets landing/final/messages + 3 slots without crashes, and ensures restored URLs are derived from remote snapshot data rather than relying on prior-session state. Verify the component's usage instructions before implementing."
+          "description": "Update Landing page structure to use the shared ValentineLayout, harmonize spacing/typography, and ensure decorative elements and card styling match the refined system using existing shadcn-ui components (Button, Textarea); verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/pages/VideosPage.tsx",
           "operation": "modify",
-          "description": "Update video slot handling to safely manage and clean up only local object URLs while leaving remotely-restored preview URLs intact, ensuring the three-slot UI remains stable for both empty and restored states. Verify the component's usage instructions before implementing."
+          "description": "Update Videos page styling to use the shared ValentineLayout and match the refined system (header hierarchy, card surfaces, borders/radius, spacing) using existing shadcn-ui components (Button, Input, Label); verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/FinalMessagePage.tsx",
+          "operation": "modify",
+          "description": "Update Final Message page styling to use the shared ValentineLayout and unify typography, spacing, and surface styling with the other pages using existing shadcn-ui components (Textarea); verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-27",
-      "summary": "Add frontend safeguards and actionable English error messages for oversized video payloads and backend connectivity/storage failures so users get specific guidance instead of generic \"save failed\".",
+      "id": "REQ-37",
+      "summary": "Revise the Videos page header and copy to clearly present a “Featured Videos” section while keeping the three provided MP4 URLs as the only video sources.",
       "acceptanceCriteria": [
-        "When a user attempts to save videos larger than the configured limits, Save is blocked and the UI shows a specific English error (not a generic \"save failed\").",
-        "When the backend is unreachable or the actor is null, the UI shows \"Backend connection not available. Please refresh and try again.\" (or equivalent existing message) and does not lose in-memory edits.",
-        "When backend storage/upload fails for blob payloads, the UI surfaces a friendly English error message that helps the user retry or reduce video size."
+        "Videos page displays the section title exactly as: “Featured Videos”",
+        "The three embedded videos use these exact URLs as sources: https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4, https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4, https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4",
+        "No UI is present that allows local video file uploads or replacing the provided URLs"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/valentineRemoteProgress.ts",
+          "path": "frontend/src/pages/VideosPage.tsx",
           "operation": "modify",
-          "description": "Expand error normalization to map common failure modes (null actor, network issues, blob-storage upload/persistence failures, size/limit violations, and backend traps) into actionable English messages compatible with the existing UI error display. Verify the component's usage instructions before implementing."
+          "description": "Change the section header title to exactly “Featured Videos” and update surrounding English copy to describe the featured section. Ensure no controls are added that allow users to upload/replace video sources; keep the page as an embed-only viewer/editor for titles using existing shadcn-ui components (Input, Label, Button); verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Ensure the Save flow preserves in-memory edits on failures, surfaces specific normalized errors (including the required backend-connection message), and consistently blocks Save on preflight size validation failures without attempting remote calls. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/SaveProgressButton.tsx",
-          "operation": "modify",
-          "description": "Refine the user-facing save error presentation so it consistently displays the normalized actionable English message (including connectivity and oversize guidance) without regressing the existing save/share UX. Verify the component's usage instructions before implementing."
+          "description": "Verify the three video slots continue to initialize with the exact provided MP4 URLs and are passed through unchanged to the Videos page (no proxying, no rewriting). Also ensure no additional video sources are introduced via UI wiring."
         }
       ]
     },
     {
-      "id": "REQ-28",
-      "summary": "Add a concise repo-local technical specification describing the remote video save architecture, API surface expectations, error handling, security model, and a cross-user restore test plan.",
+      "id": "REQ-38",
+      "summary": "Ensure the site is responsive and intuitive across devices with seamless navigation (Landing → Videos → Final Message) and an adaptive video grid/layout.",
       "acceptanceCriteria": [
-        "A markdown technical spec document exists in the repo and includes: (1) problem description of the save failure, (2) architecture overview of snapshot + blob persistence, (3) list of backend methods and expected inputs/outputs, (4) error handling and common failure modes, (5) security/auth rules for reads vs writes, and (6) an implementation and testing checklist that a developer can follow.",
-        "All user-facing strings in the spec (examples/error messages) are in English."
+        "On small screens, videos are displayed in a single-column layout with readable headings and comfortable spacing",
+        "On larger screens, the videos use a multi-column/grid layout without overflow or clipped controls",
+        "Primary navigation controls remain easy to discover and activate on touch devices (no overlapping fixed elements blocking actions)",
+        "Videos remain playable with visible controls on Chrome, Firefox, Safari, and Edge"
       ],
       "file_operations": [
         {
-          "path": "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add clear, touch-friendly navigation wiring for all steps (Landing → Videos → Final Message), including back/step navigation affordances. Adjust fixed-position UI (e.g., save control placement) to avoid overlapping primary actions on small screens using existing shadcn-ui Button styling where applicable; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/StepNavigation.tsx",
           "operation": "create",
-          "description": "Write the markdown technical specification covering the remote-save client (`frontend/src/lib/valentineRemoteProgress.ts`), the snapshot actor expectations (method names and high-level inputs/outputs), blob persistence via the blob-storage ExternalBlob concept, error handling guidance (English strings), security/auth expectations (Internet Identity + write capability), and a step-by-step cross-user restore test plan. Verify the component's usage instructions before implementing."
+          "description": "Create a compact responsive step navigation component (Landing / Videos / Final Message) with accessible buttons and current-step indication. Compose existing shadcn-ui Button styles; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Replace any potentially obstructive fixed navigation controls with layout-based navigation that remains reachable on mobile (comfortable padding, no overlap with other fixed UI). Use existing shadcn-ui Button; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/VideosPage.tsx",
+          "operation": "modify",
+          "description": "Update the video grid to adapt across breakpoints (single column on small screens; multi-column on larger screens) and ensure video controls never clip/overflow. Keep <video controls> visible and functional; use existing shadcn-ui components for surrounding UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/FinalMessagePage.tsx",
+          "operation": "modify",
+          "description": "Add or wire navigation controls so users can move intuitively through the 3-page flow (including returning to previous steps) without relying on hidden gestures. Use existing shadcn-ui Button; verify the component's usage instructions before implementing."
         }
       ]
     }

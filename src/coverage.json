@@ -1,75 +1,82 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T18:38:20.476Z",
+  "generatedAt": "2026-02-14T19:44:00.277Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 1,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-24",
-        "summary": "Diagnose and fix the current \"Save failed\" behavior by verifying that the deployed Motoko canister exposes the exact Valentine snapshot APIs expected by the frontend remote-save client, and that those methods succeed end-to-end for both create and update flows (including video blob payloads).",
-        "status": "missing",
-        "plannedFiles": [
-          "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-25",
-        "summary": "Ensure remote-saved videos are actually persisted via the backend snapshot payload and can be restored for viewing by a different user/browser using the same shareable link (saveId-based restore), including correct reconstruction of the three video slots.",
-        "status": "missing",
-        "plannedFiles": [
-          "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/pages/VideosPage.tsx"
-        ],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-26",
-        "summary": "Harden backend-side security for snapshot updates so only authenticated users can write, and only holders of the per-save write capability can update an existing save; ensure user-facing failures are returned in clear English and are surfaced by the existing frontend error normalization.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-27",
-        "summary": "Add backend and frontend safeguards and user-facing error messages for oversized video payloads and backend storage failures, so \"save failed\" is replaced by actionable English messages (e.g., per-video/total size limit exceeded, storage/upload failure, backend unavailable).",
-        "status": "missing",
-        "plannedFiles": [
-          "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/components/SaveProgressButton.tsx"
-        ],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-28",
-        "summary": "Provide a concise, repo-local technical specification (as a markdown document committed to the project) describing the remote video save architecture on the Internet Computer for this app: problem statement, relevant components (frontend remote-save client, backend snapshot actor, blob storage), API surface, error handling, security model, and a step-by-step test plan to validate cross-user video restore.",
+        "id": "REQ-36",
+        "summary": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/REMOTE_VIDEO_SAVE_SPEC.md"
+          "frontend/src/index.css",
+          "frontend/src/components/ValentineLayout.tsx",
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/pages/FinalMessagePage.tsx"
         ],
         "matchedFiles": [
-          "frontend/REMOTE_VIDEO_SAVE_SPEC.md"
+          "frontend/src/index.css",
+          "frontend/src/components/ValentineLayout.tsx",
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/pages/FinalMessagePage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-37",
+        "summary": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-38",
+        "summary": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/StepNavigation.tsx",
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/pages/FinalMessagePage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/StepNavigation.tsx",
+          "frontend/src/pages/LandingPage.tsx",
+          "frontend/src/pages/VideosPage.tsx",
+          "frontend/src/pages/FinalMessagePage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
+    "frontend/src/App.tsx",
+    "frontend/src/components/FloatingHearts.tsx",
+    "frontend/src/components/StepNavigation.tsx",
+    "frontend/src/components/ValentineLayout.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/FinalMessagePage.tsx",
+    "frontend/src/pages/LandingPage.tsx",
+    "frontend/src/pages/VideosPage.tsx",
+    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

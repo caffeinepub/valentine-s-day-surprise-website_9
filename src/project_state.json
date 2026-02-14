@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
+  "projectStateVersion": 19,
   "summary": "Design and build a responsive 3-page Valentine’s Day surprise website with editable custom text, a three-video upload/display page with editable headings, a final vibrant pink page with a centered dark pink text box and subtle animated floating hearts, plus a save/progress feature backed by cloud database storage that supports cross-user viewing of the latest saved progress and real-time updates (e.g., via WebSockets) with authentication and conflict-safe concurrency handling.",
   "architectural_notes": [
     "Responsive design for desktop and mobile across all pages",
@@ -17,7 +17,7 @@
   "known_issues": [
     "Clicking the Save button shows \"save failed\" due to missing/broken backend connectivity for video saving; videos are not being persisted for cross-user viewing."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-3-page-responsive-valentine-s-day-website-with-clear-navigation-between-pages-page-1-landing-page-2-videos-page-3-final-message",
@@ -194,6 +194,86 @@
         "REQ-28"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-standalone-well-commented-html-vanilla-javascript-code-snippet-to-the-repo-that-loads-the-following-three-remote-mp4-videos-simultaneously-on-one-page-optimized-for-performance-and-user-experience-https-image2url-com-r2-default-videos-1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae-mp4-https-image2url-com-r2-default-videos-1771096125343-9f368017-cf72-4a89-a32a-82afbda31671-mp4-https-image2url-com-r2-default-videos-1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837-mp4-the-snippet-must-not-rely-on-heavy-libraries-and-must-include-clear-inline-comments-explaining-the-approach",
+      "title": "Add a standalone, well-commented HTML + vanilla JavaScript code snippet to the repo that loads the following three remote MP4 videos simultaneously on one page, optimized for performance and user experience:\n- https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4\n- https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4\n- https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4\n\nThe snippet must not rely on heavy libraries and must include clear inline comments explaining the approach.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-standalone-demo-page-is-responsive-across-devices-mobile-desktop-and-uses-a-lightweight-layout-that-displays-three-videos-in-a-single-column-on-small-screens-and-in-a-multi-column-grid-layout-on-larger-screens",
+      "title": "Ensure the standalone demo page is responsive across devices (mobile/desktop) and uses a lightweight layout that displays three videos in a single column on small screens and in a multi-column/grid layout on larger screens.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-lazy-loading-logic-when-appropriate-that-improves-initial-page-performance-without-preventing-the-goal-of-having-all-three-videos-load-concurrently-once-the-user-is-likely-to-view-them-e-g-when-the-page-is-visible-after-initial-render-use-browser-native-techniques-e-g-intersectionobserver-and-document-the-behavior-in-comments",
+      "title": "Implement lazy-loading logic (when appropriate) that improves initial page performance without preventing the goal of having all three videos load concurrently once the user is likely to view them (e.g., when the page is visible/after initial render). Use browser-native techniques (e.g., IntersectionObserver) and document the behavior in comments.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-robust-per-video-error-handling-in-the-demo-page-detect-and-display-an-english-user-visible-message-per-video-when-loading-decoding-fails-and-include-basic-retry-guidance-actions-without-heavy-libraries",
+      "title": "Add robust per-video error handling in the demo page: detect and display an English, user-visible message per video when loading/decoding fails, and include basic retry guidance/actions (without heavy libraries).",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-the-demo-page-to-be-cross-browser-compatible-chrome-firefox-safari-edge-and-include-best-practice-video-attributes-and-js-patterns-for-broad-compatibility-e-g-avoiding-unsupported-apis-without-fallback-document-any-browser-specific-considerations-in-comments",
+      "title": "Design the demo page to be cross-browser compatible (Chrome, Firefox, Safari, Edge) and include best-practice video attributes and JS patterns for broad compatibility (e.g., avoiding unsupported APIs without fallback). Document any browser-specific considerations in comments.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-s-videospage-to-remove-all-local-video-upload-ui-behavior-and-instead-embed-the-following-three-remote-mp4-urls-as-the-only-video-sources-in-the-three-designated-video-sections-on-the-videospage-page-2-video-1-url-https-image2url-com-r2-default-videos-1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae-mp4-video-2-url-https-image2url-com-r2-default-videos-1771096125343-9f368017-cf72-4a89-a32a-82afbda31671-mp4-video-3-url-https-image2url-com-r2-default-videos-1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837-mp4-this-change-is-for-the-deployed-site-at-https-apshara-wes-caffeine-xyz-caffeineadmintoken-82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b",
+      "title": "Update the app’s VideosPage to remove all local video upload UI/behavior and instead embed the following three remote MP4 URLs as the only video sources in the three designated video sections on the VideosPage (Page 2):\n- Video 1 URL: https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4\n- Video 2 URL: https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4\n- Video 3 URL: https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4\n\nThis change is for the deployed site at: https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-set-the-videospage-s-initial-in-memory-state-so-that-the-three-video-slots-are-pre-populated-with-the-provided-remote-mp4-urls-and-no-file-objects-rather-than-starting-with-empty-null-video-urls",
+      "title": "Set the VideosPage’s initial/in-memory state so that the three video slots are pre-populated with the provided remote MP4 URLs (and no File objects) rather than starting with empty/null video URLs.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-mirror-the-design-and-layout-of-the-reference-webpage-at-https-apshara-wes-caffeine-xyz-caffeineadmintoken-82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b-across-the-3-page-valentine-site-by-aligning-color-usage-typography-spacing-and-component-styling-to-match-the-reference-as-closely-as-possible-without-copying-copyrighted-assets-verbatim",
+      "title": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-videos-page-section-header-and-surrounding-copy-to-reflect-a-clear-featured-videos-section-while-continuing-to-prominently-embed-the-three-provided-mp4-urls-as-the-only-video-sources",
+      "title": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-overall-site-experience-is-responsive-and-intuitive-across-mobile-tablet-and-desktop-including-navigation-between-landing-videos-final-message-and-a-video-grid-layout-that-adapts-cleanly-to-different-screen-sizes",
+      "title": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -297,6 +377,24 @@
       "reqIds": [
         "REQ-27"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Provide a performant, responsive HTML+JS implementation to load and play three specified remote MP4 videos simultaneously, with optional lazy-loading and robust per-video error handling (no heavy libraries; cross-browser compatible).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Update the site’s VideoPage to replace existing uploaded/embedded videos with three provided remote MP4 URLs in all designated video sections, removing previous upload formats and ensuring the new URLs are correctly embedded and functional.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Mirror the design/layout of the provided reference webpage while integrating the three specified remote MP4 video URLs prominently and keeping navigation responsive/intuitive",
+      "reqIds": [],
       "status": "pending"
     }
   ],

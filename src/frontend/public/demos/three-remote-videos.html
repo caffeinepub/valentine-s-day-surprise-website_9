@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Remote Videos Demo - Optimized Loading</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        /* Video grid layout - responsive */
+        .video-grid {
+            display: grid;
+            gap: 24px;
+            /* Single column on mobile */
+            grid-template-columns: 1fr;
+        }
+
+        /* 2 columns on tablets */
+        @media (min-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 3 columns on desktop */
+        @media (min-width: 1024px) {
+            .video-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Video card styling */
+        .video-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* 16:9 aspect ratio container for videos */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+            overflow: hidden;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Status indicator */
+        .video-status {
+            padding: 16px;
+            min-height: 80px;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .status-loading {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-ready {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Spinner animation for loading state */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: #991b1b;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Retry button */
+        .retry-button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .retry-button:hover {
+            background: #b91c1c;
+        }
+
+        .retry-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Info section */
+        .info-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .info-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .info-section p {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .info-section ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .info-section code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Loading overlay for initial lazy-load trigger */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Three Remote Videos Demo</h1>
+            <p class="subtitle">Optimized simultaneous loading with lazy-load, error handling & responsive design</p>
+        </header>
+
+        <!-- Video grid container - observed by IntersectionObserver -->
+        <div class="video-grid" id="videoGrid">
+            <!-- Video 1 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <div class="loading-overlay" id="overlay-1">
+                        <div class="spinner"></div>
+                        <span style="margin-left: 8px;">Preparing...</span>
+                    </div>
+                    <!-- 
+                        preload="none" initially to prevent automatic loading
+                        controls: show native browser controls for play/pause/volume/fullscreen
+                        playsinline: required for iOS to play inline (not fullscreen)
+                        muted: helps with autoplay restrictions (though we're not autoplaying)
+                    -->
+                    <video 
+                        id="video-1" 
+                        controls 
+                        playsinline 
+                        preload="none"
+                        data-src="https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4"
+                    >
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-status">
+                    <div class="video-title">Video 1</div>
+                    <div id="status-1" class="status-container"></div>
+                </div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <div class="loading-overlay" id="overlay-2">
+                        <div class="spinner"></div>
+                        <span style="margin-left: 8px;">Preparing...</span>
+                    </div>
+                    <video 
+                        id="video-2" 
+                        controls 
+                        playsinline 
+                        preload="none"
+                        data-src="https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4"
+                    >
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-status">
+                    <div class="video-title">Video 2</div>
+                    <div id="status-2" class="status-container"></div>
+                </div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <div class="loading-overlay" id="overlay-3">
+                        <div class="spinner"></div>
+                        <span style="margin-left: 8px;">Preparing...</span>
+                    </div>
+                    <video 
+                        id="video-3" 
+                        controls 
+                        playsinline 
+                        preload="none"
+                        data-src="https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4"
+                    >
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-status">
+                    <div class="video-title">Video 3</div>
+                    <div id="status-3" class="status-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information section -->
+        <div class="info-section">
+            <h2>📋 Implementation Details</h2>
+            <p><strong>Performance Optimizations:</strong></p>
+            <ul>
+                <li><strong>Lazy Loading:</strong> Videos use IntersectionObserver to defer loading until the grid is visible in viewport</li>
+                <li><strong>Parallel Loading:</strong> All three videos start loading simultaneously once triggered (same execution tick)</li>
+                <li><strong>Preload Strategy:</strong> <code>preload="none"</code> initially, then switched to <code>preload="metadata"</code> on trigger</li>
+                <li><strong>Responsive Design:</strong> Single column on mobile, 2 columns on tablets, 3 columns on desktop</li>
+                <li><strong>16:9 Aspect Ratio:</strong> Maintained using padding-bottom technique with object-fit contain</li>
+            </ul>
+            <p style="margin-top: 16px;"><strong>Cross-Browser Compatibility:</strong></p>
+            <ul>
+                <li><strong>Controls:</strong> Native browser controls work across all modern browsers</li>
+                <li><strong>playsinline:</strong> Ensures iOS Safari plays inline instead of fullscreen</li>
+                <li><strong>IntersectionObserver:</strong> Supported in all modern browsers; fallback to immediate load if unavailable</li>
+                <li><strong>Autoplay Restrictions:</strong> Not using autoplay to avoid browser policy issues; user-initiated play only</li>
+            </ul>
+            <p style="margin-top: 16px;"><strong>Error Handling:</strong></p>
+            <ul>
+                <li>Per-video error detection with user-friendly messages</li>
+                <li>Retry functionality that resets and reloads failed videos</li>
+                <li>Isolated error states - one video failure doesn't affect others</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Video Player Manager
+         * Handles lazy-loading, status updates, and error recovery for multiple videos
+         */
+        
+        // Configuration
+        const VIDEO_IDS = ['video-1', 'video-2', 'video-3'];
+        const STATUS_IDS = ['status-1', 'status-2', 'status-3'];
+        const OVERLAY_IDS = ['overlay-1', 'overlay-2', 'overlay-3'];
+        
+        // State tracking for each video
+        const videoStates = {
+            'video-1': { loaded: false, error: false },
+            'video-2': { loaded: false, error: false },
+            'video-3': { loaded: false, error: false }
+        };
+
+        /**
+         * Update the status UI for a specific video
+         * @param {string} videoId - The video element ID
+         * @param {string} status - Status type: 'loading', 'ready', or 'error'
+         * @param {string} message - Optional message to display
+         */
+        function updateStatus(videoId, status, message = '') {
+            const statusIndex = VIDEO_IDS.indexOf(videoId);
+            if (statusIndex === -1) return;
+            
+            const statusContainer = document.getElementById(STATUS_IDS[statusIndex]);
+            const overlay = document.getElementById(OVERLAY_IDS[statusIndex]);
+            
+            // Hide overlay once loading starts
+            if (status !== 'preparing' && overlay) {
+                overlay.classList.add('hidden');
+            }
+            
+            let html = '';
+            
+            switch(status) {
+                case 'loading':
+                    html = `
+                        <div class="status-badge status-loading">
+                            <div class="spinner"></div>
+                            <span>Loading...</span>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'ready':
+                    html = `
+                        <div class="status-badge status-ready">
+                            <span>✓ Ready to play</span>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'error':
+                    html = `
+                        <div class="status-badge status-error">
+                            <span>⚠ Error</span>
+                        </div>
+                        <div class="error-message">
+                            ${message || 'Video failed to load. Please check your connection and try again.'}
+                        </div>
+                        <button class="retry-button" onclick="retryVideo('${videoId}')">
+                            Retry Loading
+                        </button>
+                    `;
+                    break;
+            }
+            
+            statusContainer.innerHTML = html;
+        }
+
+        /**
+         * Initialize a single video element with event listeners
+         * @param {string} videoId - The video element ID
+         */
+        function initializeVideo(videoId) {
+            const video = document.getElementById(videoId);
+            if (!video) return;
+            
+            // Event: Loading starts
+            video.addEventListener('loadstart', () => {
+                console.log(`[${videoId}] Loading started`);
+                updateStatus(videoId, 'loading');
+            });
+            
+            // Event: Metadata loaded (duration, dimensions available)
+            video.addEventListener('loadedmetadata', () => {
+                console.log(`[${videoId}] Metadata loaded - Duration: ${video.duration}s`);
+            });
+            
+            // Event: Enough data loaded to start playing
+            video.addEventListener('canplay', () => {
+                console.log(`[${videoId}] Can play - Ready for playback`);
+                videoStates[videoId].loaded = true;
+                videoStates[videoId].error = false;
+                updateStatus(videoId, 'ready');
+            });
+            
+            // Event: Error occurred during loading
+            video.addEventListener('error', (e) => {
+                console.error(`[${videoId}] Error loading video:`, e);
+                videoStates[videoId].error = true;
+                
+                // Provide specific error message based on error code
+                let errorMessage = 'Video failed to load. ';
+                if (video.error) {
+                    switch(video.error.code) {
+                        case MediaError.MEDIA_ERR_ABORTED:
+                            errorMessage += 'Loading was aborted.';
+                            break;
+                        case MediaError.MEDIA_ERR_NETWORK:
+                            errorMessage += 'Network error occurred. Check your connection.';
+                            break;
+                        case MediaError.MEDIA_ERR_DECODE:
+                            errorMessage += 'Video format not supported or corrupted.';
+                            break;
+                        case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                            errorMessage += 'Video source not supported by your browser.';
+                            break;
+                        default:
+                            errorMessage += 'Unknown error occurred.';
+                    }
+                }
+                
+                updateStatus(videoId, 'error', errorMessage);
+            });
+            
+            // Event: Video is playing
+            video.addEventListener('playing', () => {
+                console.log(`[${videoId}] Playing`);
+            });
+            
+            // Event: Video is paused
+            video.addEventListener('pause', () => {
+                console.log(`[${videoId}] Paused`);
+            });
+        }
+
+        /**
+         * Start loading all videos simultaneously
+         * This is triggered by the IntersectionObserver when the grid becomes visible
+         */
+        function startLoadingAllVideos() {
+            console.log('🚀 Starting parallel video loading...');
+            
+            // Load all videos in the same execution tick for true parallel loading
+            VIDEO_IDS.forEach(videoId => {
+                const video = document.getElementById(videoId);
+                if (!video || videoStates[videoId].loaded) return;
+                
+                // Get the URL from data-src attribute
+                const videoUrl = video.getAttribute('data-src');
+                if (!videoUrl) return;
+                
+                // Set the src attribute to trigger loading
+                video.src = videoUrl;
+                
+                // Change preload strategy to metadata for better UX
+                // (loads enough to show duration/thumbnail without downloading entire file)
+                video.preload = 'metadata';
+                
+                // Explicitly call load() to start the loading process
+                video.load();
+                
+                console.log(`[${videoId}] Load initiated`);
+            });
+        }
+
+        /**
+         * Retry loading a failed video
+         * @param {string} videoId - The video element ID to retry
+         */
+        function retryVideo(videoId) {
+            console.log(`[${videoId}] Retrying...`);
+            
+            const video = document.getElementById(videoId);
+            if (!video) return;
+            
+            // Reset state
+            videoStates[videoId].error = false;
+            videoStates[videoId].loaded = false;
+            
+            // Show loading status
+            updateStatus(videoId, 'loading');
+            
+            // Reset and reload the video
+            const videoUrl = video.getAttribute('data-src');
+            video.src = ''; // Clear current source
+            video.load(); // Reset the video element
+            
+            // Set source again and reload
+            setTimeout(() => {
+                video.src = videoUrl;
+                video.preload = 'metadata';
+                video.load();
+            }, 100);
+        }
+
+        /**
+         * Initialize the lazy-loading system using IntersectionObserver
+         * This defers video loading until the grid is visible in the viewport
+         */
+        function initializeLazyLoading() {
+            const videoGrid = document.getElementById('videoGrid');
+            
+            // Check if IntersectionObserver is supported
+            if ('IntersectionObserver' in window) {
+                console.log('✓ IntersectionObserver supported - using lazy loading');
+                
+                // Create observer with threshold of 0.1 (10% visible triggers loading)
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        // When the grid becomes visible, start loading all videos
+                        if (entry.isIntersecting) {
+                            console.log('Video grid is visible - triggering load');
+                            startLoadingAllVideos();
+                            // Stop observing after first trigger
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    // Trigger when 10% of the grid is visible
+                    threshold: 0.1,
+                    // Start observing slightly before element enters viewport
+                    rootMargin: '50px'
+                });
+                
+                // Start observing the video grid
+                observer.observe(videoGrid);
+                
+            } else {
+                // Fallback for browsers without IntersectionObserver support
+                // (very rare in modern browsers, but good to have)
+                console.warn('⚠ IntersectionObserver not supported - loading immediately');
+                startLoadingAllVideos();
+            }
+        }
+
+        /**
+         * Main initialization function
+         * Called when DOM is fully loaded
+         */
+        function init() {
+            console.log('🎬 Initializing Three Remote Videos Demo');
+            
+            // Initialize event listeners for all videos
+            VIDEO_IDS.forEach(videoId => {
+                initializeVideo(videoId);
+            });
+            
+            // Set up lazy loading
+            initializeLazyLoading();
+            
+            console.log('✓ Initialization complete');
+        }
+
+        // Start initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            // DOM already loaded
+            init();
+        }
+
+        /**
+         * CROSS-BROWSER COMPATIBILITY NOTES:
+         * 
+         * 1. Autoplay Restrictions:
+         *    - Chrome/Safari: Require user interaction or muted+autoplay
+         *    - Firefox: More lenient but still restricted
+         *    - Solution: We use controls and let users initiate playback
+         * 
+         * 2. Preload Behavior:
+         *    - Chrome: Respects preload="none" strictly
+         *    - Safari: May preload some data regardless
+         *    - Firefox: Similar to Chrome
+         *    - Solution: We use preload="none" initially, then "metadata" on trigger
+         * 
+         * 3. iOS Safari Specifics:
+         *    - Requires playsinline attribute to avoid fullscreen
+         *    - May have stricter autoplay policies
+         *    - Solution: playsinline attribute added to all videos
+         * 
+         * 4. Video Format Support:
+         *    - MP4 with H.264 codec: Universally supported
+         *    - The provided URLs use .mp4 which works across all browsers
+         * 
+         * 5. IntersectionObserver:
+         *    - Supported in all modern browsers (Chrome 51+, Firefox 55+, Safari 12.1+)
+         *    - Fallback to immediate load for older browsers
+         */
+    </script>
+</body>
+</html>

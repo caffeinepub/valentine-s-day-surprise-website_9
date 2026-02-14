@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import LandingPage from './pages/LandingPage';
 import VideosPage from './pages/VideosPage';
 import FinalMessagePage from './pages/FinalMessagePage';
 import SaveProgressButton from './components/SaveProgressButton';
+import StepNavigation from './components/StepNavigation';
 import { saveProgress, loadProgress } from './lib/valentineProgressStorage';
-import { getSaveIdFromURL, setSaveIdInURL, buildShareableLink } from './lib/saveId';
+import { getSaveIdFromURL, setSaveIdInURL, buildShareableLink, removeSaveIdFromURL } from './lib/saveId';
 import {
   createRemoteSave,
   updateRemoteSave,
@@ -37,9 +38,21 @@ function App() {
   // Lifted state for all editable content
   const [landingMessage, setLandingMessage] = useState("Happy Valentine's Day, [Name]!");
   const [videoSlots, setVideoSlots] = useState<VideoSlot[]>([
-    { heading: 'Our First Memory', file: null, url: null },
-    { heading: 'A Special Moment', file: null, url: null },
-    { heading: 'Forever Together', file: null, url: null },
+    { 
+      heading: 'Our First Memory', 
+      file: null, 
+      url: 'https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4' 
+    },
+    { 
+      heading: 'A Special Moment', 
+      file: null, 
+      url: 'https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4' 
+    },
+    { 
+      heading: 'Forever Together', 
+      file: null, 
+      url: 'https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4' 
+    },
   ]);
   const [finalMessage, setFinalMessage] = useState(
     "You are the love of my life. Happy Valentine's Day! ❤️"
@@ -174,9 +187,6 @@ function App() {
       });
     };
   }, []);
-
-  const navigateToVideos = () => setCurrentPage('videos');
-  const navigateToFinal = () => setCurrentPage('final');
 
   const handleReloadNewerVersion = async () => {
     clearNotification();
@@ -324,9 +334,23 @@ function App() {
     );
   };
 
+  const handleToggleGlobalLatest = (enabled: boolean) => {
+    setIsGlobalLatestMode(enabled);
+    if (enabled) {
+      // Switching to global latest mode
+      setActiveSaveId(null);
+      removeSaveIdFromURL();
+      setShareableLink('');
+    }
+  };
+
+  const handleNavigate = (page: Page) => {
+    setCurrentPage(page);
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-red-50 dark:from-pink-950 dark:via-rose-950 dark:to-red-950 flex items-center justify-center">
+      <div className="min-h-screen gradient-romantic flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg text-muted-foreground">Loading your Valentine's surprise...</p>
@@ -339,51 +363,16 @@ function App() {
     <div className="min-h-screen relative">
       {/* Remote restore error message */}
       {remoteRestoreError && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-md">
-          <div className="bg-destructive/10 border-2 border-destructive/50 rounded-lg p-4 shadow-lg">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-destructive flex-1">{remoteRestoreError}</p>
-            </div>
-            <button
-              onClick={() => setRemoteRestoreError('')}
-              className="mt-2 text-xs text-destructive/70 hover:text-destructive underline mx-auto block"
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-      )}
-      
-      {/* Newer version notification */}
-      {hasNewerVersion && !hasUnsavedChanges && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-md">
-          <div className="bg-blue-50 dark:bg-blue-950 border-2 border-blue-500/50 rounded-lg p-4 shadow-lg">
-            <div className="flex items-start gap-3">
-              <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-blue-900 dark:text-blue-100 font-medium">
-                  Newer content available
-                </p>
-                <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
-                  This Valentine has been updated. Reload to see the latest version.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-2 mt-3">
-              <Button
-                size="sm"
-                onClick={handleReloadNewerVersion}
-                className="flex-1"
-              >
-                <RefreshCw className="w-3 h-3 mr-1" />
-                Reload
-              </Button>
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-full mx-4">
+          <div className="glass-card rounded-lg p-4 flex items-start gap-3 shadow-lg border-2 border-destructive/50">
+            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-2">
+              <p className="text-sm font-medium text-destructive">{remoteRestoreError}</p>
               <Button
                 size="sm"
                 variant="outline"
-                onClick={clearNotification}
-                className="flex-1"
+                onClick={() => setRemoteRestoreError('')}
+                className="text-xs"
               >
                 Dismiss
               </Button>
@@ -391,9 +380,40 @@ function App() {
           </div>
         </div>
       )}
-      
-      {/* Save button - fixed position, visible on all pages */}
-      <div className="fixed top-8 right-8 z-50">
+
+      {/* Newer version notification */}
+      {hasNewerVersion && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-full mx-4">
+          <div className="glass-card rounded-lg p-4 flex items-start gap-3 shadow-lg border-2 border-primary/50">
+            <RefreshCw className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <div className="flex-1 space-y-2">
+              <p className="text-sm font-medium text-primary">
+                A newer version is available (v{newerVersion?.toString()})
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={handleReloadNewerVersion}
+                  className="text-xs"
+                >
+                  Reload
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={clearNotification}
+                  className="text-xs"
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Save button - fixed position */}
+      <div className="fixed top-4 right-4 z-40">
         <SaveProgressButton
           onSave={handleSave}
           status={saveStatus}
@@ -404,38 +424,54 @@ function App() {
           isAuthenticated={isAuthenticated}
           onLogin={login}
           isGlobalLatestMode={isGlobalLatestMode}
-          onToggleGlobalLatest={(enabled) => {
-            if (enabled) {
-              setIsGlobalLatestMode(true);
-              setActiveSaveId(null);
-              setShareableLink('');
-            } else {
-              setIsGlobalLatestMode(false);
-            }
-          }}
+          onToggleGlobalLatest={handleToggleGlobalLatest}
         />
       </div>
 
+      {/* Step Navigation */}
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40">
+        <StepNavigation currentStep={currentPage} onNavigate={handleNavigate} />
+      </div>
+
+      {/* Page content */}
       {currentPage === 'landing' && (
         <LandingPage
           message={landingMessage}
           onMessageChange={setLandingMessage}
-          onNext={navigateToVideos}
+          onNext={() => setCurrentPage('videos')}
         />
       )}
+
       {currentPage === 'videos' && (
         <VideosPage
           videoSlots={videoSlots}
           onVideoSlotChange={handleVideoSlotChange}
-          onNext={navigateToFinal}
+          onNext={() => setCurrentPage('final')}
         />
       )}
+
       {currentPage === 'final' && (
         <FinalMessagePage
           message={finalMessage}
           onMessageChange={setFinalMessage}
+          onBackToStart={() => setCurrentPage('landing')}
         />
       )}
+
+      {/* Footer */}
+      <footer className="fixed bottom-0 left-0 right-0 z-30 py-4 text-center text-sm text-muted-foreground bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
+        <p>
+          © {new Date().getFullYear()} · Built with ❤️ using{' '}
+          <a
+            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline font-medium"
+          >
+            caffeine.ai
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }

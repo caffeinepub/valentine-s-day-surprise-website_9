@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Fix remote video “Save failed” issues by aligning the frontend remote-save client with the deployed Motoko snapshot APIs, ensuring video blobs persist reliably, and enabling cross-browser/user restore via shareable save links.
+**Goal:** Update the 3-page Valentine site to closely match the reference webpage’s overall styling, and clarify/polish the Videos page as a “Featured Videos” section while keeping the same three MP4 sources.
 
 **Planned changes:**
-- Verify and correct frontend↔backend compatibility for the Valentine snapshot API surface used by `frontend/src/lib/valentineRemoteProgress.ts`, covering both create and update (saveId present) flows including video blob payloads.
-- Ensure backend persistence and restore correctly reconstruct the landing/final messages, three video headings, and playable videos from stored snapshot blob data (not from uploader-session `blob:` URLs), including empty-slot handling.
-- Harden backend write security: require Internet Identity authentication for write operations; enforce per-save write capability on updates; return clear English authorization/version-conflict errors that the existing frontend error normalization can surface.
-- Add frontend and backend safeguards for oversized payloads and storage/connectivity failures so the UI shows actionable English errors (size limit, backend unavailable, upload/storage failure) instead of a generic “save failed”.
-- Add a concise repo-local markdown technical specification documenting the remote video save architecture, API surface, error handling, security model, and a step-by-step cross-user restore test plan.
+- Align Landing, Videos, and Final Message pages to the reference page’s look-and-feel (color usage, typography, spacing, and component styling) using original styling and standard components (no copying copyrighted assets).
+- Update the Videos page header and surrounding copy so the section title is exactly “Featured Videos”, while continuing to embed only the three provided MP4 URLs.
+- Improve responsive layout and navigation across mobile/tablet/desktop, including an adaptive video grid that remains playable with visible controls across major browsers.
 
-**User-visible outcome:** Signed-in users can save and re-save (update) videos without “save failed”; shareable links reliably restore messages/headings and playable videos on a different browser/device, with clear English error messages when saves can’t proceed.
+**User-visible outcome:** The Valentine site presents a cohesive, reference-inspired design across all three pages, with a clearly labeled “Featured Videos” section that displays the same three embedded videos in a responsive, easy-to-navigate layout.

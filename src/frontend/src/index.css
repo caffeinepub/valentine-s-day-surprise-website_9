@@ -5,57 +5,60 @@
 @layer base {
     :root {
         --radius: 1rem;
-        /* Romantic pink/red palette for light mode */
-        --background: 0.98 0.02 10;
-        --foreground: 0.25 0.08 15;
-        --card: 1 0.015 10;
-        --card-foreground: 0.25 0.08 15;
-        --popover: 1 0.015 10;
-        --popover-foreground: 0.25 0.08 15;
-        --primary: 0.65 0.22 15;
-        --primary-foreground: 0.98 0.02 10;
-        --secondary: 0.92 0.08 355;
-        --secondary-foreground: 0.25 0.08 15;
-        --muted: 0.95 0.04 355;
-        --muted-foreground: 0.50 0.06 15;
-        --accent: 0.88 0.15 350;
-        --accent-foreground: 0.25 0.08 15;
+        /* Refined romantic palette - elegant pinks and purples */
+        --background: 0.98 0.015 320;
+        --foreground: 0.20 0.05 280;
+        --card: 0.99 0.01 320;
+        --card-foreground: 0.20 0.05 280;
+        --popover: 0.99 0.01 320;
+        --popover-foreground: 0.20 0.05 280;
+        --primary: 0.55 0.20 340;
+        --primary-foreground: 0.99 0.01 320;
+        --secondary: 0.90 0.06 330;
+        --secondary-foreground: 0.20 0.05 280;
+        --muted: 0.94 0.03 330;
+        --muted-foreground: 0.50 0.04 280;
+        --accent: 0.75 0.18 350;
+        --accent-foreground: 0.99 0.01 320;
         --destructive: 0.577 0.245 27.325;
         --destructive-foreground: 0.985 0 0;
-        --border: 0.90 0.06 355;
-        --input: 0.90 0.06 355;
-        --ring: 0.65 0.22 15;
-        --romantic-vibrant: 0.75 0.25 345;
-        --romantic-dark: 0.55 0.22 345;
+        --border: 0.88 0.05 330;
+        --input: 0.88 0.05 330;
+        --ring: 0.55 0.20 340;
+        --romantic-vibrant: 0.70 0.22 345;
+        --romantic-soft: 0.85 0.12 335;
+        --glass-bg: 0.95 0.03 330;
     }
 
     .dark {
-        --background: 0.18 0.04 15;
-        --foreground: 0.98 0.02 10;
-        --card: 0.22 0.05 15;
-        --card-foreground: 0.98 0.02 10;
-        --popover: 0.22 0.05 15;
-        --popover-foreground: 0.98 0.02 10;
-        --primary: 0.75 0.25 345;
-        --primary-foreground: 0.18 0.04 15;
-        --secondary: 0.30 0.08 355;
-        --secondary-foreground: 0.98 0.02 10;
-        --muted: 0.28 0.06 355;
-        --muted-foreground: 0.70 0.04 10;
-        --accent: 0.45 0.18 350;
-        --accent-foreground: 0.98 0.02 10;
+        --background: 0.15 0.04 280;
+        --foreground: 0.98 0.01 320;
+        --card: 0.18 0.05 280;
+        --card-foreground: 0.98 0.01 320;
+        --popover: 0.18 0.05 280;
+        --popover-foreground: 0.98 0.01 320;
+        --primary: 0.70 0.22 345;
+        --primary-foreground: 0.15 0.04 280;
+        --secondary: 0.25 0.08 330;
+        --secondary-foreground: 0.98 0.01 320;
+        --muted: 0.22 0.06 330;
+        --muted-foreground: 0.70 0.03 320;
+        --accent: 0.50 0.18 350;
+        --accent-foreground: 0.98 0.01 320;
         --destructive: 0.704 0.191 22.216;
-        --destructive-foreground: 0.98 0.02 10;
-        --border: 0.35 0.08 355;
-        --input: 0.35 0.08 355;
-        --ring: 0.75 0.25 345;
-        --romantic-vibrant: 0.65 0.22 345;
-        --romantic-dark: 0.45 0.20 345;
+        --destructive-foreground: 0.98 0.01 320;
+        --border: 0.30 0.08 330;
+        --input: 0.30 0.08 330;
+        --ring: 0.70 0.22 345;
+        --romantic-vibrant: 0.60 0.20 345;
+        --romantic-soft: 0.35 0.12 335;
+        --glass-bg: 0.20 0.05 280;
     }
 
     * {
         @apply border-border;
     }
+    
     body {
         @apply bg-background text-foreground;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -66,8 +69,35 @@
     .romantic-vibrant-bg {
         background-color: oklch(var(--romantic-vibrant));
     }
-    .romantic-dark-bg {
-        background-color: oklch(var(--romantic-dark));
+    
+    .romantic-soft-bg {
+        background-color: oklch(var(--romantic-soft));
+    }
+    
+    .glass-card {
+        background: oklch(var(--glass-bg) / 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid oklch(var(--border) / 0.3);
+    }
+    
+    .gradient-romantic {
+        background: linear-gradient(135deg, 
+            oklch(0.95 0.08 340) 0%, 
+            oklch(0.92 0.10 330) 25%,
+            oklch(0.90 0.12 320) 50%,
+            oklch(0.88 0.10 310) 75%,
+            oklch(0.85 0.08 300) 100%
+        );
+    }
+    
+    .dark .gradient-romantic {
+        background: linear-gradient(135deg, 
+            oklch(0.20 0.08 340) 0%, 
+            oklch(0.18 0.10 330) 25%,
+            oklch(0.16 0.12 320) 50%,
+            oklch(0.18 0.10 310) 75%,
+            oklch(0.20 0.08 300) 100%
+        );
     }
 }
 
@@ -75,38 +105,38 @@
 @keyframes float {
     0%, 100% {
         transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0.7;
+        opacity: 0.5;
     }
     25% {
         transform: translateY(-20px) translateX(10px) rotate(5deg);
-        opacity: 1;
+        opacity: 0.8;
     }
     50% {
         transform: translateY(-35px) translateX(-5px) rotate(-3deg);
-        opacity: 0.8;
+        opacity: 0.6;
     }
     75% {
         transform: translateY(-20px) translateX(-10px) rotate(3deg);
-        opacity: 1;
+        opacity: 0.8;
     }
 }
 
 @keyframes float-delayed {
     0%, 100% {
         transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0.6;
+        opacity: 0.4;
     }
     25% {
         transform: translateY(-25px) translateX(-8px) rotate(-4deg);
-        opacity: 0.9;
+        opacity: 0.7;
     }
     50% {
         transform: translateY(-40px) translateX(8px) rotate(4deg);
-        opacity: 0.7;
+        opacity: 0.5;
     }
     75% {
         transform: translateY(-25px) translateX(12px) rotate(-2deg);
-        opacity: 0.9;
+        opacity: 0.7;
     }
 }
 
@@ -121,4 +151,22 @@
 /* Smooth transitions */
 .transition-smooth {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Video container aspect ratio */
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

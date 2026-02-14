@@ -2,10 +2,14 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-provide-a-concise-repo-local-technical-specification-as-a-markdown-document-committed-to-the-project-describing-the-remote-video-save-architecture-on-the-internet-computer-for-this-app-problem-statement-relevant-components-frontend-remote-save-client-backend-snapshot-actor-blob-storage-api-surface-error-handling-security-model-and-a-step-by-step-test-plan-to-validate-cross-user-video-restore",
-      "featureTitle": "Provide a concise, repo-local technical specification (as a markdown document committed to the project) describing the remote video save architecture on the Internet Computer for this app: problem statement, relevant components (frontend remote-save client, backend snapshot actor, blob storage), API surface, error handling, security model, and a step-by-step test plan to validate cross-user video restore.",
+      "featureId": "feature-mirror-the-design-and-layout-of-the-reference-webpage-at-https-apshara-wes-caffeine-xyz-caffeineadmintoken-82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b-across-the-3-page-valentine-site-by-aligning-color-usage-typography-spacing-and-component-styling-to-match-the-reference-as-closely-as-possible-without-copying-copyrighted-assets-verbatim",
+      "featureTitle": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
       "files": [
-        "frontend/REMOTE_VIDEO_SAVE_SPEC.md"
+        "frontend/src/components/ValentineLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/FinalMessagePage.tsx",
+        "frontend/src/pages/LandingPage.tsx",
+        "frontend/src/pages/VideosPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,7 +21,52 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-28"
+        "REQ-36"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-videos-page-section-header-and-surrounding-copy-to-reflect-a-clear-featured-videos-section-while-continuing-to-prominently-embed-the-three-provided-mp4-urls-as-the-only-video-sources",
+      "featureTitle": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/VideosPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-37"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-overall-site-experience-is-responsive-and-intuitive-across-mobile-tablet-and-desktop-including-navigation-between-landing-videos-final-message-and-a-video-grid-layout-that-adapts-cleanly-to-different-screen-sizes",
+      "featureTitle": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/StepNavigation.tsx",
+        "frontend/src/pages/FinalMessagePage.tsx",
+        "frontend/src/pages/LandingPage.tsx",
+        "frontend/src/pages/VideosPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-38"
       ],
       "confidence": "high"
     }
