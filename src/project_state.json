@@ -1,17 +1,23 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "Design and build a responsive 3-page Valentine’s Day surprise website with editable custom text, a three-video upload/display page with editable headings, a final vibrant pink page with a centered dark pink text box and subtle animated floating hearts, plus a rebuilt Save button that persists user progress across different browsers/devices via a shareable link backed by server-side storage.",
+  "projectStateVersion": 13,
+  "summary": "Design and build a responsive 3-page Valentine’s Day surprise website with editable custom text, a three-video upload/display page with editable headings, a final vibrant pink page with a centered dark pink text box and subtle animated floating hearts, plus a save/progress feature backed by cloud database storage that supports cross-user viewing of the latest saved progress and real-time updates (e.g., via WebSockets) with authentication and conflict-safe concurrency handling.",
   "architectural_notes": [
     "Responsive design for desktop and mobile across all pages",
     "Romantic color scheme (pinks/reds) with strong legibility and user-friendly layout",
     "Avoid excessive animations; keep heart animations subtle and non-distracting",
     "Editable text fields on page 1 and page 3; editable headings for each video on page 2",
     "Replace local-only persistence with server-side persistence for cross-device access (e.g., save to backend and restore via unique URL/token).",
-    "Design save/restore to be scalable and secure (rate limiting, input validation, encryption in transit, and safe token generation) while maintaining major-browser compatibility and good performance."
+    "Design save/restore to be scalable and secure (rate limiting, input validation, encryption in transit, and safe token generation) while maintaining major-browser compatibility and good performance.",
+    "Support shared progress visible to any viewer by storing the canonical state in a cloud database (not solely local storage or per-link restore).",
+    "Use real-time transport (e.g., WebSockets/SSE) to broadcast snapshot changes to connected clients.",
+    "Define authentication + authorization model for reading/writing progress; enforce security server-side with least privilege.",
+    "Ensure data integrity under concurrent writes using versioning/optimistic locking and well-defined conflict resolution."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
+  "known_issues": [
+    "Clicking the Save button shows \"save failed\" due to missing/broken backend connectivity for video saving; videos are not being persisted for cross-user viewing."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-3-page-responsive-valentine-s-day-website-with-clear-navigation-between-pages-page-1-landing-page-2-videos-page-3-final-message",
@@ -132,6 +138,62 @@
         "REQ-16"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-fix-the-current-remote-save-runtime-error-where-the-frontend-calls-backend-methods-that-do-not-exist-e-g-actor-createvalentinesnapshot-is-not-a-function-by-adding-the-required-valentine-snapshot-apis-to-the-motoko-backend-main-actor-and-ensuring-they-are-exposed-in-the-generated-canister-interface",
+      "title": "Fix the current remote-save runtime error where the frontend calls backend methods that do not exist (e.g., `actor.createValentineSnapshot is not a function`) by adding the required Valentine snapshot APIs to the Motoko backend main actor and ensuring they are exposed in the generated canister interface.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-conflict-safe-concurrency-control-for-snapshot-updates-by-introducing-a-server-managed-version-or-etag-like-field-and-requiring-clients-to-present-the-expected-version-when-updating-return-a-clear-error-message-on-version-mismatch-so-the-ui-can-prompt-the-user-to-reload",
+      "title": "Add conflict-safe concurrency control for snapshot updates by introducing a server-managed version (or ETag-like) field and requiring clients to present the expected version when updating; return a clear error message on version mismatch so the UI can prompt the user to reload.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-shared-latest-progress-mode-so-that-opening-the-app-without-a-saveid-can-still-load-the-most-recently-saved-global-snapshot-readable-by-anyone-and-saving-updates-that-shared-latest-snapshot-when-the-user-chooses-to-do-so",
+      "title": "Implement a “shared latest progress” mode so that opening the app without a `saveId` can still load the most recently saved global snapshot (readable by anyone), and saving updates that shared-latest snapshot when the user chooses to do so.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-near-real-time-cross-client-updates-without-websockets-by-adding-client-polling-that-periodically-refreshes-remote-snapshot-data-both-for-saveid-based-restores-and-the-global-latest-snapshot-and-only-re-hydrates-state-when-the-remote-savedat-version-has-advanced",
+      "title": "Provide near-real-time cross-client updates without WebSockets by adding client polling that periodically refreshes remote snapshot data (both for `saveId`-based restores and the global latest snapshot), and only re-hydrates state when the remote `savedAt`/`version` has advanced.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-authentication-and-authorization-rules-require-internet-identity-authentication-for-any-write-operation-create-update-global-latest-and-per-saveid-updates-while-allowing-read-access-for-link-based-viewing-ensure-clear-user-facing-prompts-and-errors-for-unauthenticated-save-attempts",
+      "title": "Add authentication and authorization rules: require Internet Identity authentication for any write operation (create/update global latest and per-saveId updates), while allowing read access for link-based viewing; ensure clear user-facing prompts and errors for unauthenticated save attempts.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-harden-frontend-error-handling-for-remote-save-restore-so-backend-method-absence-schema-mismatches-oversized-payload-errors-and-auth-conflict-errors-are-surfaced-as-friendly-english-messages-in-the-existing-save-ui-and-remote-restore-banner",
+      "title": "Harden frontend error handling for remote save/restore so backend method absence, schema mismatches, oversized payload errors, and auth/conflict errors are surfaced as friendly English messages in the existing Save UI and remote-restore banner.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-concise-repo-local-technical-specification-as-a-markdown-document-committed-to-the-project-describing-the-remote-video-save-architecture-on-the-internet-computer-for-this-app-problem-statement-relevant-components-frontend-remote-save-client-backend-snapshot-actor-blob-storage-api-surface-error-handling-security-model-and-a-step-by-step-test-plan-to-validate-cross-user-video-restore",
+      "title": "Provide a concise, repo-local technical specification (as a markdown document committed to the project) describing the remote video save architecture on the Internet Computer for this app: problem statement, relevant components (frontend remote-save client, backend snapshot actor, blob storage), API surface, error handling, security model, and a step-by-step test plan to validate cross-user video restore.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -170,6 +232,70 @@
       "summary": "Extend the Motoko backend (single main actor) with an API for creating, updating, and fetching shareable saved snapshots using an unguessable saveId plus a write token (capability) to control updates.",
       "reqIds": [
         "REQ-12"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Implement cloud-database-backed shared progress so any user opening the page sees the latest saved state (not just via a shareable link), including scalable data model and access patterns",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add real-time updates (WebSockets or similar) so clients see saved progress changes immediately across multiple users/devices",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add user authentication and security controls for saved progress (auth method, authorization rules, secure transport, and protection against unauthorized writes/reads)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add multi-user conflict handling/data integrity strategy for concurrent edits and saves (e.g., versioning, optimistic concurrency, merge rules)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Implement Motoko data models and storage for Valentine snapshots in `backend/main.mo`, including: (1) an unguessable `saveId` per snapshot, (2) a per-snapshot `writeToken` (capability) required for updates, and (3) persistence across upgrades using stable storage.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Diagnose and fix the current \"Save failed\" behavior by verifying that the deployed Motoko canister exposes the exact Valentine snapshot APIs expected by the frontend remote-save client, and that those methods succeed end-to-end for both create and update flows (including video blob payloads).",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Ensure remote-saved videos are actually persisted via the backend snapshot payload and can be restored for viewing by a different user/browser using the same shareable link (saveId-based restore), including correct reconstruction of the three video slots.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Harden backend-side security for snapshot updates so only authenticated users can write, and only holders of the per-save write capability can update an existing save; ensure user-facing failures are returned in clear English and are surfaced by the existing frontend error normalization.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add backend and frontend safeguards and user-facing error messages for oversized video payloads and backend storage failures, so \"save failed\" is replaced by actionable English messages (e.g., per-video/total size limit exceeded, storage/upload failure, backend unavailable).",
+      "reqIds": [
+        "REQ-27"
       ],
       "status": "pending"
     }

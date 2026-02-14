@@ -10,6 +10,25 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export type ExternalBlob = Uint8Array;
+export type Time = bigint;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface Valentine {
+  'color' : string,
+  'text' : string,
+  'photoSrc' : [] | [ExternalBlob],
+}
+export interface ValentineSnapshot {
+  'writeTokenHash' : string,
+  'saveId' : string,
+  'createdBy' : Principal,
+  'valentine' : Valentine,
+  'version' : bigint,
+  'lastUpdateTimestamp' : Time,
+}
 export interface _CaffeineStorageCreateCertificateResult {
   'method' : string,
   'blob_hash' : string,
@@ -37,6 +56,25 @@ export interface _SERVICE {
     _CaffeineStorageRefillResult
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'clearAllValentineSnapshots' : ActorMethod<[], undefined>,
+  'createValentineSnapshot' : ActorMethod<[Valentine], [string, string]>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getGlobalLatest' : ActorMethod<[], [] | [ValentineSnapshot]>,
+  'getGlobalLatestVersion' : ActorMethod<[], bigint>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'getValentineSnapshot' : ActorMethod<[string], [] | [ValentineSnapshot]>,
+  'getValentineSnapshotVersion' : ActorMethod<[string], bigint>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'listValentineSnapshots' : ActorMethod<[bigint], Array<ValentineSnapshot>>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'saveGlobalLatest' : ActorMethod<[Valentine], bigint>,
+  'updateValentineSnapshot' : ActorMethod<
+    [string, bigint, Valentine, string],
+    bigint
+  >,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

@@ -1,77 +1,53 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T17:42:52.592Z",
-  "summary": "The diff adds frontend URL/saveId helpers and a remote-save client with size validation, and updates the UI to support link-based restore and sharing. However, the backend changes do not implement the required create/update/fetch snapshot API (with write-token capability, savedAt, and payload limits). A migration file and blob-storage mixin are introduced without clear requirement/evidence of a stable upgrade need, and backend/main.mo appears to no longer contain the requested persistence logic.",
+  "generatedAt": "2026-02-14T18:38:20.473Z",
+  "summary": "Diff adds a repo-local technical spec and updates backend snapshot create/update with authentication checks, write-token enforcement, and version-conflict errors. However, the diff evidence is insufficient to confirm full frontend↔backend API compatibility for restore/read flows and blob persistence end-to-end, and it does not show backend-side handling of blob storage failures or explicit oversized-payload safeguards.",
   "missing_requirements": [
     {
-      "id": "REQ-11",
-      "requirement": "Implement server-side persistence for the Valentine progress so that a saved state can be restored from any browser/device by opening the same shareable link.",
-      "reason": "Frontend code references remote create/update/fetch flows, but the backend diff does not show any snapshot persistence implementation (data model, storage, or endpoints) needed to actually store and restore snapshots across devices.",
+      "id": "REQ-24",
+      "requirement": "Verify and ensure the deployed Motoko canister exposes the exact snapshot APIs expected by the frontend remote-save client and that create+update succeed end-to-end (including video blob payloads), avoiding runtime missing-method failures.",
+      "reason": "The diff only shows `createValentineSnapshot` and `updateValentineSnapshot` in `backend/main.mo` (truncated). It does not provide evidence of the full API surface the frontend needs for save/restore (e.g., any fetch/get methods), nor does it show the frontend calling these methods without runtime mismatches.",
       "evidence": [
-        "backend/main.mo",
-        "frontend/src/lib/valentineRemoteProgress.ts",
-        "frontend/src/App.tsx"
+        "backend/main.mo (truncated)",
+        "frontend-file-summaries.txt (mentions client behavior but not actual diff)"
       ]
     },
     {
-      "id": "REQ-12",
-      "requirement": "Extend the Motoko backend (single main actor) with an API for creating, updating, and fetching shareable saved snapshots using an unguessable saveId plus a write token to control updates, including savedAt and size-limit error handling.",
-      "reason": "backend/main.mo only imports migration and includes a blob-storage mixin; the diff summary shows no Motoko methods for (1) create returning {saveId, writeToken}, (2) update requiring {saveId, writeToken}, or (3) fetch by saveId, nor any writeToken rejection logic, savedAt handling, or structured size-limit errors.",
+      "id": "REQ-25",
+      "requirement": "Ensure remote-saved videos are persisted via backend snapshot payload and can be restored cross-browser via shareable link, reconstructing three video slots from backend blob data (not local blob: URLs).",
+      "reason": "While the spec and frontend summary describe combining videos into an `ExternalBlob` and reconstructing videos on restore, the backend diff excerpt does not show any read/restore API nor any explicit blob persistence/retrieval logic wired into snapshot fetch/restore. The backend excerpt only shows snapshot creation/update storing `valentine.photoSrc : ?ExternalBlob` but not how it is retrieved for a different user/browser.",
       "evidence": [
-        "backend/main.mo",
-        "backend/migration.mo",
-        "frontend-file-summaries.txt (mentions new backend methods/types but backend implementation not present)"
+        "backend/main.mo (truncated)",
+        "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
+        "frontend-file-summaries.txt"
       ]
     },
     {
-      "id": "REQ-13",
-      "requirement": "Update the frontend Save button flow to support remote saves: create a remote save and update URL if no saveId; otherwise update the same remote save; show clear English saving/success/error status including last-saved time.",
-      "reason": "While SaveProgressButton UI supports status text and sharing, the diff excerpt for App.tsx is truncated before the onSave handler. The provided evidence does not confirm the required logic that (a) creates a new remote save when no saveId and then updates the URL via History API, and (b) updates the existing save when saveId is present (no second save).",
+      "id": "REQ-26",
+      "requirement": "Require Internet Identity authentication for all write operations (create/update/save global latest) and enforce per-save write capability with clear English errors; enforce version conflicts with clear English errors.",
+      "reason": "Auth + write-token + version-conflict traps are shown for create/update, but the diff excerpt does not show any ‘save global latest’ (or equivalent) write endpoint being protected, so the requirement that *any write operation including save global latest* requires authentication cannot be confirmed from the provided diff summary.",
       "evidence": [
-        "frontend/src/App.tsx (truncated)",
-        "frontend/src/components/SaveProgressButton.tsx",
-        "frontend/src/lib/saveId.ts"
+        "backend/main.mo (truncated)"
       ]
     },
     {
-      "id": "REQ-15",
-      "requirement": "Add scalable, browser-safe handling for saving and restoring videos through the backend, including explicit per-video and total payload limits, and user-visible error feedback when limits are exceeded (frontend + backend validation).",
-      "reason": "Frontend size validation helpers are present (50MB per video, 100MB total), but the backend diff does not show any payload-size validation or structured error variants/messages for oversize snapshots/videos as required.",
+      "id": "REQ-27",
+      "requirement": "Add backend+frontend safeguards and user-facing English errors for oversized video payloads and backend storage failures; frontend should show a clear backend-unavailable message when actor is null/unreachable.",
+      "reason": "The spec and frontend summary mention size validation and improved error messaging, but the diff does not include the actual frontend code changes (only a summary file) and the backend excerpt does not show size-limit enforcement or any explicit handling/mapping of storage/upload failures from the blob-storage mixin into friendly English errors.",
       "evidence": [
-        "frontend/src/lib/valentineRemoteProgress.ts",
-        "backend/main.mo"
+        "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
+        "frontend-file-summaries.txt",
+        "backend/main.mo (truncated)"
       ]
     }
   ],
-  "hallucinated_features": [
-    {
-      "description": "Introduced a backend migration module and wired it into backend/main.mo despite no shown stable-state upgrade or migration logic.",
-      "reason": "BuildRequest constraint says to only create backend/migration.mo if required by an actual stable-state upgrade; the added migration.mo is a no-op and the diff provides no evidence of a necessary stable-state migration.",
-      "evidence": [
-        "backend/migration.mo",
-        "backend/main.mo"
-      ]
-    },
-    {
-      "description": "Switched backend/main.mo to include an external blob-storage mixin (blob-storage/Mixin).",
-      "reason": "The BuildRequest requires implementing snapshot persistence APIs in a single Motoko actor; the diff instead shows inclusion of a blob-storage mixin without any requested snapshot API implementation or mention of using that library in requirements.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    }
-  ],
-  "confidence": 0.74,
+  "hallucinated_features": [],
+  "confidence": 0.54,
   "changed_files": [
     "backend/main.mo",
-    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/SaveProgressButton.tsx",
-    "frontend/src/lib/saveId.ts",
-    "frontend/src/lib/valentineProgressStorage.ts",
-    "frontend/src/lib/valentineRemoteProgress.ts",
-    "frontend/src/pages/VideosPage.tsx",
+    "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
     "project_state.json"
   ]
 }

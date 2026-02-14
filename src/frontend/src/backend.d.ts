@@ -7,57 +7,49 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-
-// Remote snapshot types for Valentine's Day app
+export class ExternalBlob {
+    getBytes(): Promise<Uint8Array<ArrayBuffer>>;
+    getDirectURL(): string;
+    static fromURL(url: string): ExternalBlob;
+    static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
+    withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
+}
+export interface Valentine {
+    color: string;
+    text: string;
+    photoSrc?: ExternalBlob;
+}
+export type Time = bigint;
 export interface ValentineSnapshot {
-  landingMessage: string;
-  videoSlots: Array<{
-    heading: string;
-    videoUrl: string | null;
-  }>;
-  finalMessage: string;
-  savedAt: bigint;
+    writeTokenHash: string;
+    saveId: string;
+    createdBy: Principal;
+    valentine: Valentine;
+    version: bigint;
+    lastUpdateTimestamp: Time;
 }
-
-export interface CreateSnapshotResult {
-  __kind__: "Ok";
-  saveId: string;
-  writeToken: string;
+export interface UserProfile {
+    name: string;
 }
-
-export interface CreateSnapshotError {
-  __kind__: "Err";
-  message: string;
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
 }
-
-export type CreateSnapshotResponse = CreateSnapshotResult | CreateSnapshotError;
-
-export interface UpdateSnapshotSuccess {
-  __kind__: "Ok";
-  savedAt: bigint;
-}
-
-export interface UpdateSnapshotError {
-  __kind__: "Err";
-  message: string;
-}
-
-export type UpdateSnapshotResponse = UpdateSnapshotSuccess | UpdateSnapshotError;
-
-export interface FetchSnapshotSuccess {
-  __kind__: "Ok";
-  snapshot: ValentineSnapshot;
-}
-
-export interface FetchSnapshotError {
-  __kind__: "Err";
-  message: string;
-}
-
-export type FetchSnapshotResponse = FetchSnapshotSuccess | FetchSnapshotError;
-
 export interface backendInterface {
-  createValentineSnapshot: (snapshot: ValentineSnapshot) => Promise<CreateSnapshotResponse>;
-  updateValentineSnapshot: (saveId: string, writeToken: string, snapshot: ValentineSnapshot) => Promise<UpdateSnapshotResponse>;
-  fetchValentineSnapshot: (saveId: string) => Promise<FetchSnapshotResponse>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    clearAllValentineSnapshots(): Promise<void>;
+    createValentineSnapshot(valentine: Valentine): Promise<[string, string]>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
+    getGlobalLatest(): Promise<ValentineSnapshot | null>;
+    getGlobalLatestVersion(): Promise<bigint>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getValentineSnapshot(saveId: string): Promise<ValentineSnapshot | null>;
+    getValentineSnapshotVersion(saveId: string): Promise<bigint>;
+    isCallerAdmin(): Promise<boolean>;
+    listValentineSnapshots(limit: bigint): Promise<Array<ValentineSnapshot>>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    saveGlobalLatest(valentine: Valentine): Promise<bigint>;
+    updateValentineSnapshot(saveId: string, expectedVersion: bigint, valentine: Valentine, writeToken: string): Promise<bigint>;
 }

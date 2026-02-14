@@ -19,6 +19,27 @@ export const _CaffeineStorageRefillResult = IDL.Record({
   'success' : IDL.Opt(IDL.Bool),
   'topped_up_amount' : IDL.Opt(IDL.Nat),
 });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const ExternalBlob = IDL.Vec(IDL.Nat8);
+export const Valentine = IDL.Record({
+  'color' : IDL.Text,
+  'text' : IDL.Text,
+  'photoSrc' : IDL.Opt(ExternalBlob),
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const Time = IDL.Int;
+export const ValentineSnapshot = IDL.Record({
+  'writeTokenHash' : IDL.Text,
+  'saveId' : IDL.Text,
+  'createdBy' : IDL.Principal,
+  'valentine' : Valentine,
+  'version' : IDL.Nat,
+  'lastUpdateTimestamp' : Time,
+});
 
 export const idlService = IDL.Service({
   '_caffeineStorageBlobIsLive' : IDL.Func(
@@ -47,6 +68,38 @@ export const idlService = IDL.Service({
       [],
     ),
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'clearAllValentineSnapshots' : IDL.Func([], [], []),
+  'createValentineSnapshot' : IDL.Func([Valentine], [IDL.Text, IDL.Text], []),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getGlobalLatest' : IDL.Func([], [IDL.Opt(ValentineSnapshot)], ['query']),
+  'getGlobalLatestVersion' : IDL.Func([], [IDL.Nat], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'getValentineSnapshot' : IDL.Func(
+      [IDL.Text],
+      [IDL.Opt(ValentineSnapshot)],
+      ['query'],
+    ),
+  'getValentineSnapshotVersion' : IDL.Func([IDL.Text], [IDL.Nat], ['query']),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'listValentineSnapshots' : IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(ValentineSnapshot)],
+      ['query'],
+    ),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'saveGlobalLatest' : IDL.Func([Valentine], [IDL.Nat], []),
+  'updateValentineSnapshot' : IDL.Func(
+      [IDL.Text, IDL.Nat, Valentine, IDL.Text],
+      [IDL.Nat],
+      [],
+    ),
 });
 
 export const idlInitArgs = [];
@@ -62,6 +115,27 @@ export const idlFactory = ({ IDL }) => {
   const _CaffeineStorageRefillResult = IDL.Record({
     'success' : IDL.Opt(IDL.Bool),
     'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const ExternalBlob = IDL.Vec(IDL.Nat8);
+  const Valentine = IDL.Record({
+    'color' : IDL.Text,
+    'text' : IDL.Text,
+    'photoSrc' : IDL.Opt(ExternalBlob),
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const Time = IDL.Int;
+  const ValentineSnapshot = IDL.Record({
+    'writeTokenHash' : IDL.Text,
+    'saveId' : IDL.Text,
+    'createdBy' : IDL.Principal,
+    'valentine' : Valentine,
+    'version' : IDL.Nat,
+    'lastUpdateTimestamp' : Time,
   });
   
   return IDL.Service({
@@ -91,6 +165,38 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'clearAllValentineSnapshots' : IDL.Func([], [], []),
+    'createValentineSnapshot' : IDL.Func([Valentine], [IDL.Text, IDL.Text], []),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getGlobalLatest' : IDL.Func([], [IDL.Opt(ValentineSnapshot)], ['query']),
+    'getGlobalLatestVersion' : IDL.Func([], [IDL.Nat], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'getValentineSnapshot' : IDL.Func(
+        [IDL.Text],
+        [IDL.Opt(ValentineSnapshot)],
+        ['query'],
+      ),
+    'getValentineSnapshotVersion' : IDL.Func([IDL.Text], [IDL.Nat], ['query']),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'listValentineSnapshots' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Vec(ValentineSnapshot)],
+        ['query'],
+      ),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'saveGlobalLatest' : IDL.Func([Valentine], [IDL.Nat], []),
+    'updateValentineSnapshot' : IDL.Func(
+        [IDL.Text, IDL.Nat, Valentine, IDL.Text],
+        [IDL.Nat],
+        [],
+      ),
   });
 };
 

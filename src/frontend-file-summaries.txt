@@ -1,14 +1,16 @@
 {
   "frontend/src/index.css": "Global styles with romantic pink/red OKLCH color palette for light and dark modes, custom floating heart animations, and smooth transition utilities.",
-  "frontend/src/App.tsx": "Main app component managing lifted state for all editable content with remote-first save/restore flow, URL-based saveId handling, local fallback persistence, and non-blocking error messaging for remote restore failures.",
+  "frontend/src/App.tsx": "Main app component with remote-first save/restore flow, Internet Identity authentication, global-latest mode support, polling for updates, conflict handling, and non-blocking error messaging.",
   "frontend/src/pages/LandingPage.tsx": "Controlled landing page component accepting message value and onChange handler as props, displaying editable Valentine's message with decorative floating hearts and navigation to videos page.",
   "frontend/src/pages/VideosPage.tsx": "Controlled videos page component that handles both local File objects and remote video URLs, only revoking blob URLs (not remote URLs) when videos are changed.",
   "frontend/src/pages/FinalMessagePage.tsx": "Controlled final message page component accepting message value and onChange handler as props, displaying editable final message in centered dark pink box with floating hearts animation.",
   "frontend/src/components/FloatingHearts.tsx": "Reusable component rendering eight decorative heart icons with staggered floating animations positioned around the central content.",
   "frontend/tailwind.config.js": "Tailwind configuration extended with Inter font family for consistent romantic typography across the application.",
   "frontend/src/lib/valentineProgressStorage.ts": "Browser storage utilities for local persistence fallback using localStorage for text data and IndexedDB for video Blobs, unchanged from original implementation.",
-  "frontend/src/components/SaveProgressButton.tsx": "Save button component with status display, upload progress bar, shareable link popover with copy-to-clipboard functionality, and extended error message support.",
-  "frontend/src/backend.d.ts": "Extended TypeScript interface definitions for backend canister including ValentineSnapshot type and methods for creating, updating, and fetching remote snapshots with proper error handling types, all defined inline.",
+  "frontend/src/components/SaveProgressButton.tsx": "Save button component with authentication prompts, global-latest toggle, status display, upload progress, shareable link management, and extended error messaging.",
+  "frontend/src/backend.d.ts": "TypeScript interface definitions for backend canister with Valentine, ValentineSnapshot, and UserProfile types, maintaining compatibility with existing backend structure.",
   "frontend/src/lib/saveId.ts": "URL helper utilities for managing saveId query parameter in browser URL using URLSearchParams and History API, plus shareable link generation.",
-  "frontend/src/lib/valentineRemoteProgress.ts": "Remote progress client handling video conversion to base64 data URLs, size validation (50MB per video, 100MB total), and backend snapshot create/update/fetch operations with write token management and inline type definitions."
+  "frontend/src/lib/valentineRemoteProgress.ts": "Remote progress client handling Valentine snapshot operations with video persistence by encoding video metadata in the text field and storing combined video data in the photoSrc ExternalBlob field, including progress tracking, size validation, and conversion between local File objects and embedded/remote video URLs.",
+  "frontend/src/hooks/useValentineSnapshotPolling.ts": "React hook that polls for remote snapshot updates at regular intervals, detects newer versions, and respects unsaved local changes to prevent data loss.",
+  "frontend/REMOTE_VIDEO_SAVE_SPEC.md": "Comprehensive technical specification documenting the remote video save architecture, backend API surface, error handling strategies, security model, and cross-user restore test plan with implementation checklist."
 }

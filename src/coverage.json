@@ -1,119 +1,75 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T17:42:52.595Z",
+  "generatedAt": "2026-02-14T18:38:20.476Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 6,
-    "implemented": 5,
+    "total": 5,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-11",
-        "summary": "Implement server-side persistence for the Valentine progress so that a saved state can be restored from any browser/device by opening the same shareable link.",
-        "status": "implemented",
+        "id": "REQ-24",
+        "summary": "Diagnose and fix the current \"Save failed\" behavior by verifying that the deployed Motoko canister exposes the exact Valentine snapshot APIs expected by the frontend remote-save client, and that those methods succeed end-to-end for both create and update flows (including video blob payloads).",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/App.tsx",
           "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/lib/saveId.ts",
-          "frontend/src/backend.d.ts"
+          "frontend/src/hooks/useActor.ts",
+          "frontend/src/App.tsx"
         ],
-        "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/lib/saveId.ts",
-          "frontend/src/backend.d.ts"
-        ]
+        "matchedFiles": []
       },
       {
-        "id": "REQ-12",
-        "summary": "Extend the Motoko backend (single main actor) with an API for creating, updating, and fetching shareable saved snapshots using an unguessable saveId plus a write token (capability) to control updates.",
+        "id": "REQ-25",
+        "summary": "Ensure remote-saved videos are actually persisted via the backend snapshot payload and can be restored for viewing by a different user/browser using the same shareable link (saveId-based restore), including correct reconstruction of the three video slots.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/lib/valentineRemoteProgress.ts",
+          "frontend/src/App.tsx",
+          "frontend/src/pages/VideosPage.tsx"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-26",
+        "summary": "Harden backend-side security for snapshot updates so only authenticated users can write, and only holders of the per-save write capability can update an existing save; ensure user-facing failures are returned in clear English and are surfaced by the existing frontend error normalization.",
         "status": "unknown",
         "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-13",
-        "summary": "Update the frontend Save button flow to support remote saves: on first remote save, generate and store a shareable link (containing saveId) and keep the app synced to that remote save on subsequent saves.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/SaveProgressButton.tsx",
-          "frontend/src/lib/valentineRemoteProgress.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/SaveProgressButton.tsx",
-          "frontend/src/lib/valentineRemoteProgress.ts"
-        ]
-      },
-      {
-        "id": "REQ-14",
-        "summary": "Implement link-based restore: when the app loads, if a saveId is present in the URL, fetch the server snapshot and hydrate in-memory state (and video previews) from it; otherwise fall back to the existing local restore behavior.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/lib/valentineProgressStorage.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/lib/valentineProgressStorage.ts"
-        ]
-      },
-      {
-        "id": "REQ-15",
-        "summary": "Add scalable, browser-safe handling for saving and restoring videos through the backend, including explicit per-video and total payload limits, and user-visible error feedback when limits are exceeded.",
-        "status": "implemented",
+        "id": "REQ-27",
+        "summary": "Add backend and frontend safeguards and user-facing error messages for oversized video payloads and backend storage failures, so \"save failed\" is replaced by actionable English messages (e.g., per-video/total size limit exceeded, storage/upload failure, backend unavailable).",
+        "status": "missing",
         "plannedFiles": [
           "frontend/src/lib/valentineRemoteProgress.ts",
           "frontend/src/App.tsx",
           "frontend/src/components/SaveProgressButton.tsx"
         ],
-        "matchedFiles": [
-          "frontend/src/lib/valentineRemoteProgress.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/components/SaveProgressButton.tsx"
-        ]
+        "matchedFiles": []
       },
       {
-        "id": "REQ-16",
-        "summary": "Preserve existing local persistence as an offline/quick-reload fallback, but ensure the rebuilt Save button prioritizes server-side persistence when a shareable saveId exists or when creating a new remote save.",
+        "id": "REQ-28",
+        "summary": "Provide a concise, repo-local technical specification (as a markdown document committed to the project) describing the remote video save architecture on the Internet Computer for this app: problem statement, relevant components (frontend remote-save client, backend snapshot actor, blob storage), API surface, error handling, security model, and a step-by-step test plan to validate cross-user video restore.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/lib/valentineProgressStorage.ts"
+          "frontend/REMOTE_VIDEO_SAVE_SPEC.md"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/lib/valentineProgressStorage.ts"
+          "frontend/REMOTE_VIDEO_SAVE_SPEC.md"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/blob-storage/Mixin.mo",
-    "backend/blob-storage/Storage.mo",
     "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/SaveProgressButton.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/lib/saveId.ts",
-    "frontend/src/lib/valentineProgressStorage.ts",
-    "frontend/src/lib/valentineRemoteProgress.ts",
-    "frontend/src/pages/VideosPage.tsx",
+    "frontend/REMOTE_VIDEO_SAVE_SPEC.md",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
