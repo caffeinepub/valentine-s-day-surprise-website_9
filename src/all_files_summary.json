@@ -1,0 +1,23 @@
+{
+  "backend/main.mo": "Actor imports a migration module and mixes in blob storage functionality, exposing storage operations as the backend.",
+  "backend/migration.mo": "Defines a no-op migration that simply returns the current actor unchanged.",
+  "feature_evidence.json": "Feature evidence report listing implemented features, related files, components, and test IDs for the Valentine app.",
+  "frontend-file-summaries.txt": "Prewritten summaries describing the purpose and responsibilities of each frontend file in the project.",
+  "frontend/index.css": "Tailwind base and utility setup defining the app’s full OKLCH color palette and theme variables for light and dark modes.",
+  "frontend/index.html": "Minimal HTML entry point mounting the React app and loading the main TypeScript module.",
+  "frontend/src/App.tsx": "Main React component managing global Valentine content state, remote/local persistence, URL-based restore, and page navigation.",
+  "frontend/src/components/FloatingHearts.tsx": "Renders decorative floating heart elements with varying sizes, positions, and animation delays.",
+  "frontend/src/components/SaveProgressButton.tsx": "Save button with status indicators, upload progress, and a shareable-link popover including copy-to-clipboard support.",
+  "frontend/src/hooks/useActor.ts": "React hook that creates and updates the backend canister actor based on II identity and invalidates dependent queries when the actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides React context and provider for Internet Identity authentication, exposing identity state and login/logout functions.",
+  "frontend/src/index.css": "Defines Tailwind base styles, color variables, floating heart animations, and themed background utilities.",
+  "frontend/src/lib/saveId.ts": "Helpers for reading, writing, and removing saveId query params and building shareable links.",
+  "frontend/src/lib/valentineProgressStorage.ts": "Manages saving and loading Valentine's progress using localStorage for text and IndexedDB for video blobs.",
+  "frontend/src/lib/valentineRemoteProgress.ts": "Implements remote snapshot handling, video upload validation, and conversion for backend sync of Valentine's progress.",
+  "frontend/src/main.tsx": "Bootstraps the React app with QueryClientProvider and InternetIdentityProvider.",
+  "frontend/src/pages/FinalMessagePage.tsx": "UI page for editing and displaying the final Valentine's message with decorative heart animations.",
+  "frontend/src/pages/LandingPage.tsx": "Landing page allowing users to enter a custom message and proceed, with animated hearts and styled layout.",
+  "frontend/src/pages/VideosPage.tsx": "React component rendering three editable video slots with title inputs, upload handling, and a styled romantic layout with navigation.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending colors, animations, fonts, and plugins for a themed, responsive UI.",
+  "project_state.json": "Project state file describing requirements, features, architecture notes, and current versioning for the Valentine’s website."
+}

@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 1rem;
+        /* Romantic pink/red palette for light mode */
+        --background: 0.98 0.02 10;
+        --foreground: 0.25 0.08 15;
+        --card: 1 0.015 10;
+        --card-foreground: 0.25 0.08 15;
+        --popover: 1 0.015 10;
+        --popover-foreground: 0.25 0.08 15;
+        --primary: 0.65 0.22 15;
+        --primary-foreground: 0.98 0.02 10;
+        --secondary: 0.92 0.08 355;
+        --secondary-foreground: 0.25 0.08 15;
+        --muted: 0.95 0.04 355;
+        --muted-foreground: 0.50 0.06 15;
+        --accent: 0.88 0.15 350;
+        --accent-foreground: 0.25 0.08 15;
+        --destructive: 0.577 0.245 27.325;
+        --destructive-foreground: 0.985 0 0;
+        --border: 0.90 0.06 355;
+        --input: 0.90 0.06 355;
+        --ring: 0.65 0.22 15;
+        --romantic-vibrant: 0.75 0.25 345;
+        --romantic-dark: 0.55 0.22 345;
+    }
+
+    .dark {
+        --background: 0.18 0.04 15;
+        --foreground: 0.98 0.02 10;
+        --card: 0.22 0.05 15;
+        --card-foreground: 0.98 0.02 10;
+        --popover: 0.22 0.05 15;
+        --popover-foreground: 0.98 0.02 10;
+        --primary: 0.75 0.25 345;
+        --primary-foreground: 0.18 0.04 15;
+        --secondary: 0.30 0.08 355;
+        --secondary-foreground: 0.98 0.02 10;
+        --muted: 0.28 0.06 355;
+        --muted-foreground: 0.70 0.04 10;
+        --accent: 0.45 0.18 350;
+        --accent-foreground: 0.98 0.02 10;
+        --destructive: 0.704 0.191 22.216;
+        --destructive-foreground: 0.98 0.02 10;
+        --border: 0.35 0.08 355;
+        --input: 0.35 0.08 355;
+        --ring: 0.75 0.25 345;
+        --romantic-vibrant: 0.65 0.22 345;
+        --romantic-dark: 0.45 0.20 345;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+}
+
+@layer utilities {
+    .romantic-vibrant-bg {
+        background-color: oklch(var(--romantic-vibrant));
+    }
+    .romantic-dark-bg {
+        background-color: oklch(var(--romantic-dark));
+    }
+}
+
+/* Floating hearts animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.7;
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px) rotate(5deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-35px) translateX(-5px) rotate(-3deg);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(-20px) translateX(-10px) rotate(3deg);
+        opacity: 1;
+    }
+}
+
+@keyframes float-delayed {
+    0%, 100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.6;
+    }
+    25% {
+        transform: translateY(-25px) translateX(-8px) rotate(-4deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateY(-40px) translateX(8px) rotate(4deg);
+        opacity: 0.7;
+    }
+    75% {
+        transform: translateY(-25px) translateX(12px) rotate(-2deg);
+        opacity: 0.9;
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float-delayed 7s ease-in-out infinite;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

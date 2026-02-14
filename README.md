@@ -1,2 +1,3 @@
-# valentine-s-day-surprise-website_9
-Exported from Caffeine project: Valentine's Day Surprise Website
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

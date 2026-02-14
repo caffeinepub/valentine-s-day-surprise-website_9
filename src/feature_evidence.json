@@ -1,0 +1,109 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-server-side-persistence-for-the-valentine-progress-so-that-a-saved-state-can-be-restored-from-any-browser-device-by-opening-the-same-shareable-link",
+      "featureTitle": "Implement server-side persistence for the Valentine progress so that a saved state can be restored from any browser/device by opening the same shareable link.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/lib/saveId.ts",
+        "frontend/src/lib/valentineRemoteProgress.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-frontend-save-button-flow-to-support-remote-saves-on-first-remote-save-generate-and-store-a-shareable-link-containing-saveid-and-keep-the-app-synced-to-that-remote-save-on-subsequent-saves",
+      "featureTitle": "Update the frontend Save button flow to support remote saves: on first remote save, generate and store a shareable link (containing saveId) and keep the app synced to that remote save on subsequent saves.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/SaveProgressButton.tsx",
+        "frontend/src/lib/valentineRemoteProgress.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-link-based-restore-when-the-app-loads-if-a-saveid-is-present-in-the-url-fetch-the-server-snapshot-and-hydrate-in-memory-state-and-video-previews-from-it-otherwise-fall-back-to-the-existing-local-restore-behavior",
+      "featureTitle": "Implement link-based restore: when the app loads, if a saveId is present in the URL, fetch the server snapshot and hydrate in-memory state (and video previews) from it; otherwise fall back to the existing local restore behavior.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/lib/valentineProgressStorage.ts",
+        "frontend/src/pages/VideosPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-scalable-browser-safe-handling-for-saving-and-restoring-videos-through-the-backend-including-explicit-per-video-and-total-payload-limits-and-user-visible-error-feedback-when-limits-are-exceeded",
+      "featureTitle": "Add scalable, browser-safe handling for saving and restoring videos through the backend, including explicit per-video and total payload limits, and user-visible error feedback when limits are exceeded.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/SaveProgressButton.tsx",
+        "frontend/src/lib/valentineRemoteProgress.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-preserve-existing-local-persistence-as-an-offline-quick-reload-fallback-but-ensure-the-rebuilt-save-button-prioritizes-server-side-persistence-when-a-shareable-saveid-exists-or-when-creating-a-new-remote-save",
+      "featureTitle": "Preserve existing local persistence as an offline/quick-reload fallback, but ensure the rebuilt Save button prioritizes server-side persistence when a shareable saveId exists or when creating a new remote save.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/lib/valentineProgressStorage.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "blob-storage@4.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

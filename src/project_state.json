@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Design and build a responsive 3-page Valentine’s Day surprise website with editable custom text, a three-video upload/display page with editable headings, a final vibrant pink page with a centered dark pink text box and subtle animated floating hearts, plus a rebuilt Save button that persists user progress across different browsers/devices via a shareable link backed by server-side storage.",
+  "architectural_notes": [
+    "Responsive design for desktop and mobile across all pages",
+    "Romantic color scheme (pinks/reds) with strong legibility and user-friendly layout",
+    "Avoid excessive animations; keep heart animations subtle and non-distracting",
+    "Editable text fields on page 1 and page 3; editable headings for each video on page 2",
+    "Replace local-only persistence with server-side persistence for cross-device access (e.g., save to backend and restore via unique URL/token).",
+    "Design save/restore to be scalable and secure (rate limiting, input validation, encryption in transit, and safe token generation) while maintaining major-browser compatibility and good performance."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-3-page-responsive-valentine-s-day-website-with-clear-navigation-between-pages-page-1-landing-page-2-videos-page-3-final-message",
+      "title": "Create a 3-page, responsive Valentine’s Day website with clear navigation between pages: Page 1 (Landing) -> Page 2 (Videos) -> Page 3 (Final message).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-page-1-as-a-landing-page-featuring-a-custom-editable-text-field-pre-filled-with-happy-valentine-s-day-name-and-a-navigation-button-fixed-in-the-lower-right-corner-that-goes-to-page-2",
+      "title": "Implement Page 1 as a landing page featuring a custom editable text field (pre-filled with: \"Happy Valentine’s Day, [Name]!\") and a navigation button fixed in the lower-right corner that goes to Page 2.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-page-2-to-allow-the-user-to-upload-and-display-three-videos-each-with-its-own-editable-heading-above-the-video",
+      "title": "Implement Page 2 to allow the user to upload and display three videos, each with its own editable heading above the video.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-clear-navigation-control-on-page-2-that-takes-the-user-to-page-3",
+      "title": "Add a clear navigation control on Page 2 that takes the user to Page 3.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-page-3-as-a-vibrant-pink-page-with-a-centered-dark-pink-box-containing-custom-editable-text-and-subtle-animated-hearts-floating-around-the-box-not-overwhelming-or-distracting",
+      "title": "Implement Page 3 as a vibrant pink page with a centered dark pink box containing custom editable text, and subtle animated hearts floating around the box (not overwhelming or distracting).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-consistent-romantic-visual-theme-across-all-pages-using-pinks-and-reds-as-primary-colors-while-maintaining-strong-legibility-accessible-spacing-and-user-friendly-controls-smooth-appealing-layout",
+      "title": "Apply a consistent romantic visual theme across all pages using pinks and reds as primary colors while maintaining strong legibility, accessible spacing, and user-friendly controls (smooth, appealing layout).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-visible-save-button-to-the-valentine-s-day-website-ui-that-users-can-click-at-any-time-to-save-their-current-progress-page-1-message-text-page-2-three-video-titles-and-selected-videos-page-3-final-message-text",
+      "title": "Add a visible \"Save\" button to the Valentine’s Day website UI that users can click at any time to save their current progress (Page 1 message text, Page 2 three video titles and selected videos, Page 3 final message text).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-saved-progress-locally-in-the-browser-and-restore-it-automatically-when-the-user-reloads-the-site-so-the-user-returns-to-the-last-saved-state-for-all-editable-fields-and-uploaded-videos",
+      "title": "Persist saved progress locally in the browser and restore it automatically when the user reloads the site, so the user returns to the last saved state for all editable fields and uploaded videos.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-clear-user-feedback-for-the-save-action-in-english-e-g-saved-and-or-last-saved-at-hh-mm-and-handle-failure-states-gracefully-e-g-when-browser-storage-quota-is-exceeded",
+      "title": "Provide clear user feedback for the save action in English (e.g., \"Saved\" and/or \"Last saved at HH:MM\") and handle failure states gracefully (e.g., when browser storage quota is exceeded).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-refactor-page-state-management-so-that-user-entered-values-messages-video-titles-and-selected-videos-are-not-lost-when-navigating-between-page-1-page-2-and-page-3-within-the-same-session-and-the-save-button-always-saves-the-current-in-memory-state",
+      "title": "Refactor page state management so that user-entered values (messages, video titles, and selected videos) are not lost when navigating between Page 1, Page 2, and Page 3 within the same session, and the Save button always saves the current in-memory state.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-server-side-persistence-for-the-valentine-progress-so-that-a-saved-state-can-be-restored-from-any-browser-device-by-opening-the-same-shareable-link",
+      "title": "Implement server-side persistence for the Valentine progress so that a saved state can be restored from any browser/device by opening the same shareable link.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-frontend-save-button-flow-to-support-remote-saves-on-first-remote-save-generate-and-store-a-shareable-link-containing-saveid-and-keep-the-app-synced-to-that-remote-save-on-subsequent-saves",
+      "title": "Update the frontend Save button flow to support remote saves: on first remote save, generate and store a shareable link (containing saveId) and keep the app synced to that remote save on subsequent saves.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-link-based-restore-when-the-app-loads-if-a-saveid-is-present-in-the-url-fetch-the-server-snapshot-and-hydrate-in-memory-state-and-video-previews-from-it-otherwise-fall-back-to-the-existing-local-restore-behavior",
+      "title": "Implement link-based restore: when the app loads, if a saveId is present in the URL, fetch the server snapshot and hydrate in-memory state (and video previews) from it; otherwise fall back to the existing local restore behavior.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-scalable-browser-safe-handling-for-saving-and-restoring-videos-through-the-backend-including-explicit-per-video-and-total-payload-limits-and-user-visible-error-feedback-when-limits-are-exceeded",
+      "title": "Add scalable, browser-safe handling for saving and restoring videos through the backend, including explicit per-video and total payload limits, and user-visible error feedback when limits are exceeded.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-preserve-existing-local-persistence-as-an-offline-quick-reload-fallback-but-ensure-the-rebuilt-save-button-prioritizes-server-side-persistence-when-a-shareable-saveid-exists-or-when-creating-a-new-remote-save",
+      "title": "Preserve existing local persistence as an offline/quick-reload fallback, but ensure the rebuilt Save button prioritizes server-side persistence when a shareable saveId exists or when creating a new remote save.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create 3-page site navigation: landing page with editable text and bottom-right button to page 2; page 2 to page 3 navigation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Page 2: allow user to upload and display three custom videos, each with an editable heading",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Page 3: vibrant pink theme with centered dark pink box containing editable text and subtle floating heart animations around the box",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add a \"Save\" button that lets users save their progress (editable texts/headings and selected videos) seamlessly",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Rebuild Save to persist content across browsers/devices using server-side storage and a shareable link that restores the exact saved state",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Extend the Motoko backend (single main actor) with an API for creating, updating, and fetching shareable saved snapshots using an unguessable saveId plus a write token (capability) to control updates.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Valentine's Day Surprise Website",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
