@@ -1,64 +1,35 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-14T19:44:00.277Z",
+  "generatedAt": "2026-02-14T20:02:04.565Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-36",
-        "summary": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
+        "id": "REQ-39",
+        "summary": "In `frontend/src/App.tsx`, replace the current implementation of the component’s initial in-memory content with the user-provided “New Code” values, specifically updating only the default state initializers while keeping all existing save/restore, polling, navigation, and UI wiring intact.\n\nRequired default values:\n- `landingMessage` default: `\"Happy Valentine's Day, Apshara!\"`\n- `videoSlots` defaults (keep the same remote MP4 URLs, `file: null`, but change headings):\n  1) heading: `\"🤭\"`, url: `https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4`\n  2) heading: `\"🤐\"`, url: `https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4`\n  3) heading: `\"Am I in Love with You? Definitely\"`, url: `https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4`\n- `finalMessage` default: set exactly to the provided multiline text:\n  `\"Happy Valentine’s Day, Flora. I’ve been feeling terrible about last night, and I’m so sorry for how I acted. You deserve to be treated with nothing but love, especially today. I’m incredibly lucky to have you, and I’d love to make it up to you and focus on us. I love you\\nthis alr?\\n\"`\n\nDo not change any other user-facing text in the app outside these defaults.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/ValentineLayout.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/pages/FinalMessagePage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/ValentineLayout.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/pages/FinalMessagePage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-37",
-        "summary": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/VideosPage.tsx",
           "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/VideosPage.tsx",
           "frontend/src/App.tsx"
         ]
       },
       {
-        "id": "REQ-38",
-        "summary": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
+        "id": "REQ-40",
+        "summary": "Add brief inline comments in `frontend/src/App.tsx` adjacent to the modified state initializers explaining that these values are the initial defaults used only when no remote/global/local saved state is available, so future refactors do not accidentally treat them as hard-coded overrides.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/StepNavigation.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/pages/FinalMessagePage.tsx"
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/StepNavigation.tsx",
-          "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/pages/VideosPage.tsx",
-          "frontend/src/pages/FinalMessagePage.tsx"
+          "frontend/src/App.tsx"
         ]
       }
     ]
@@ -69,14 +40,6 @@
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/src/App.tsx",
-    "frontend/src/components/FloatingHearts.tsx",
-    "frontend/src/components/StepNavigation.tsx",
-    "frontend/src/components/ValentineLayout.tsx",
-    "frontend/src/index.css",
-    "frontend/src/pages/FinalMessagePage.tsx",
-    "frontend/src/pages/LandingPage.tsx",
-    "frontend/src/pages/VideosPage.tsx",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

@@ -36,26 +36,32 @@ function App() {
   const [remoteRestoreError, setRemoteRestoreError] = useState<string>('');
   
   // Lifted state for all editable content
-  const [landingMessage, setLandingMessage] = useState("Happy Valentine's Day, [Name]!");
+  // Initial fallback default used only when no remote saveId, global-latest, or local saved progress is available
+  const [landingMessage, setLandingMessage] = useState("Happy Valentine's Day, Apshara!");
+  
+  // Initial fallback defaults for video slots (headings only; URLs remain unchanged)
+  // These values are used only before restore/hydration from remote or local storage
   const [videoSlots, setVideoSlots] = useState<VideoSlot[]>([
     { 
-      heading: 'Our First Memory', 
+      heading: '🤭', 
       file: null, 
       url: 'https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4' 
     },
     { 
-      heading: 'A Special Moment', 
+      heading: '🤐', 
       file: null, 
       url: 'https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4' 
     },
     { 
-      heading: 'Forever Together', 
+      heading: 'Am I in Love with You? Definitely', 
       file: null, 
       url: 'https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4' 
     },
   ]);
+  
+  // Initial fallback default for final message used only before restore/hydration
   const [finalMessage, setFinalMessage] = useState(
-    "You are the love of my life. Happy Valentine's Day! ❤️"
+    "Happy Valentine's Day, Flora. I've been feeling terrible about last night, and I'm so sorry for how I acted. You deserve to be treated with nothing but love, especially today. I'm incredibly lucky to have you, and I'd love to make it up to you and focus on us. I love you\nthis alr?\n"
   );
   
   // Save status tracking

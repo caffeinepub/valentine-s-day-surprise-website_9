@@ -1,6 +1,6 @@
 {
   "frontend/src/index.css": "Global styles with refined romantic pink/purple OKLCH color palette, glassmorphism utilities, gradient backgrounds, floating heart animations, and video container aspect ratio styling for elegant modern design.",
-  "frontend/src/App.tsx": "Main app component with step navigation integration, remote-first save/restore flow, Internet Identity authentication, polling for updates, conflict handling, and fixed footer with caffeine.ai attribution.",
+  "frontend/src/App.tsx": "Main app component with personalized Valentine's Day content defaults (Apshara greeting, emoji video headings, Flora final message), step navigation integration, remote-first save/restore flow with Internet Identity authentication, polling for updates, conflict handling, and inline comments clarifying fallback default values used before restore/hydration.",
   "frontend/src/pages/LandingPage.tsx": "Landing page with glassmorphism card design, centered message textarea, heart icon header, and continue button using ValentineLayout wrapper for consistent romantic styling.",
   "frontend/src/pages/VideosPage.tsx": "Videos page displaying \"Featured Videos\" title with responsive grid layout (1/3 columns), 16:9 aspect ratio video players, editable title inputs, and continue button in glassmorphism cards.",
   "frontend/src/pages/FinalMessagePage.tsx": "Final message page with glassmorphism card, animated heart icon, centered message textarea, and back-to-start button using ValentineLayout for cohesive romantic design.",

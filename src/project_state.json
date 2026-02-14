@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 19,
+  "projectStateVersion": 21,
   "summary": "Design and build a responsive 3-page Valentine’s Day surprise website with editable custom text, a three-video upload/display page with editable headings, a final vibrant pink page with a centered dark pink text box and subtle animated floating hearts, plus a save/progress feature backed by cloud database storage that supports cross-user viewing of the latest saved progress and real-time updates (e.g., via WebSockets) with authentication and conflict-safe concurrency handling.",
   "architectural_notes": [
     "Responsive design for desktop and mobile across all pages",
@@ -274,6 +274,22 @@
         "REQ-38"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-in-frontend-src-app-tsx-replace-the-current-implementation-of-the-component-s-initial-in-memory-content-with-the-user-provided-new-code-values-specifically-updating-only-the-default-state-initializers-while-keeping-all-existing-save-restore-polling-navigation-and-ui-wiring-intact-required-default-values-landingmessage-default-happy-valentine-s-day-apshara-videoslots-defaults-keep-the-same-remote-mp4-urls-file-null-but-change-headings-1-heading-url-https-image2url-com-r2-default-videos-1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae-mp4-2-heading-url-https-image2url-com-r2-default-videos-1771096125343-9f368017-cf72-4a89-a32a-82afbda31671-mp4-3-heading-am-i-in-love-with-you-definitely-url-https-image2url-com-r2-default-videos-1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837-mp4-finalmessage-default-set-exactly-to-the-provided-multiline-text-happy-valentine-s-day-flora-i-ve-been-feeling-terrible-about-last-night-and-i-m-so-sorry-for-how-i-acted-you-deserve-to-be-treated-with-nothing-but-love-especially-today-i-m-incredibly-lucky-to-have-you-and-i-d-love-to-make-it-up-to-you-and-focus-on-us-i-love-you-nthis-alr-n-do-not-change-any-other-user-facing-text-in-the-app-outside-these-defaults",
+      "title": "In `frontend/src/App.tsx`, replace the current implementation of the component’s initial in-memory content with the user-provided “New Code” values, specifically updating only the default state initializers while keeping all existing save/restore, polling, navigation, and UI wiring intact.\n\nRequired default values:\n- `landingMessage` default: `\"Happy Valentine's Day, Apshara!\"`\n- `videoSlots` defaults (keep the same remote MP4 URLs, `file: null`, but change headings):\n  1) heading: `\"🤭\"`, url: `https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4`\n  2) heading: `\"🤐\"`, url: `https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4`\n  3) heading: `\"Am I in Love with You? Definitely\"`, url: `https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4`\n- `finalMessage` default: set exactly to the provided multiline text:\n  `\"Happy Valentine’s Day, Flora. I’ve been feeling terrible about last night, and I’m so sorry for how I acted. You deserve to be treated with nothing but love, especially today. I’m incredibly lucky to have you, and I’d love to make it up to you and focus on us. I love you\\nthis alr?\\n\"`\n\nDo not change any other user-facing text in the app outside these defaults.",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-brief-inline-comments-in-frontend-src-app-tsx-adjacent-to-the-modified-state-initializers-explaining-that-these-values-are-the-initial-defaults-used-only-when-no-remote-global-local-saved-state-is-available-so-future-refactors-do-not-accidentally-treat-them-as-hard-coded-overrides",
+      "title": "Add brief inline comments in `frontend/src/App.tsx` adjacent to the modified state initializers explaining that these values are the initial defaults used only when no remote/global/local saved state is available, so future refactors do not accidentally treat them as hard-coded overrides.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -394,6 +410,12 @@
     {
       "id": "AR-20",
       "summary": "Mirror the design/layout of the provided reference webpage while integrating the three specified remote MP4 video URLs prominently and keeping navigation responsive/intuitive",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Update App.tsx default in-memory content: landing message to “Happy Valentine's Day, Apshara!”, video headings to 🤭 / 🤐 / “Am I in Love with You? Definitely”, and final message text to the provided apology/Valentine message.",
       "reqIds": [],
       "status": "pending"
     }

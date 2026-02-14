@@ -1,99 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Valentine 3-page UI refresh to mirror reference styling and polish featured videos",
+  "title": "Update App.tsx fallback default Valentine content and document restore precedence",
   "requirements": [
     {
-      "id": "REQ-36",
-      "summary": "Align the 3-page Valentine site’s design system (colors, typography, spacing, component styling) to closely match the reference page without copying any copyrighted assets.",
+      "id": "REQ-39",
+      "summary": "Update App.tsx initial in-memory default state values for landing message, video headings (keeping URLs), and final message without changing save/restore, polling, navigation, or other UI text.",
       "acceptanceCriteria": [
-        "Landing, Videos, and Final Message pages present a cohesive visual system that matches the reference page’s overall layout and styling (colors, spacing, typographic scale, component shapes)",
-        "No third-party/copyrighted images, icons, or proprietary brand marks from the reference are copied directly into the new site",
-        "All user-facing text remains in English"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Refine global theme tokens (OKLCH variables), typographic defaults, and shared utility classes (e.g., section spacing, glass/blur surfaces) to mirror the reference’s overall look-and-feel while remaining original."
-        },
-        {
-          "path": "frontend/src/components/ValentineLayout.tsx",
-          "operation": "create",
-          "description": "Create a reusable page layout wrapper that standardizes background treatment, centered content width, consistent vertical rhythm, and shared header/footer styling across all three pages. Use existing shadcn-ui primitives (e.g., Button) where needed; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/LandingPage.tsx",
-          "operation": "modify",
-          "description": "Update Landing page structure to use the shared ValentineLayout, harmonize spacing/typography, and ensure decorative elements and card styling match the refined system using existing shadcn-ui components (Button, Textarea); verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/VideosPage.tsx",
-          "operation": "modify",
-          "description": "Update Videos page styling to use the shared ValentineLayout and match the refined system (header hierarchy, card surfaces, borders/radius, spacing) using existing shadcn-ui components (Button, Input, Label); verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/FinalMessagePage.tsx",
-          "operation": "modify",
-          "description": "Update Final Message page styling to use the shared ValentineLayout and unify typography, spacing, and surface styling with the other pages using existing shadcn-ui components (Textarea); verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-37",
-      "summary": "Revise the Videos page header and copy to clearly present a “Featured Videos” section while keeping the three provided MP4 URLs as the only video sources.",
-      "acceptanceCriteria": [
-        "Videos page displays the section title exactly as: “Featured Videos”",
-        "The three embedded videos use these exact URLs as sources: https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4, https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4, https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4",
-        "No UI is present that allows local video file uploads or replacing the provided URLs"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/VideosPage.tsx",
-          "operation": "modify",
-          "description": "Change the section header title to exactly “Featured Videos” and update surrounding English copy to describe the featured section. Ensure no controls are added that allow users to upload/replace video sources; keep the page as an embed-only viewer/editor for titles using existing shadcn-ui components (Input, Label, Button); verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Verify the three video slots continue to initialize with the exact provided MP4 URLs and are passed through unchanged to the Videos page (no proxying, no rewriting). Also ensure no additional video sources are introduced via UI wiring."
-        }
-      ]
-    },
-    {
-      "id": "REQ-38",
-      "summary": "Ensure the site is responsive and intuitive across devices with seamless navigation (Landing → Videos → Final Message) and an adaptive video grid/layout.",
-      "acceptanceCriteria": [
-        "On small screens, videos are displayed in a single-column layout with readable headings and comfortable spacing",
-        "On larger screens, the videos use a multi-column/grid layout without overflow or clipped controls",
-        "Primary navigation controls remain easy to discover and activate on touch devices (no overlapping fixed elements blocking actions)",
-        "Videos remain playable with visible controls on Chrome, Firefox, Safari, and Edge"
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Landing page text field is pre-filled with \"Happy Valentine's Day, Apshara!\".",
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Videos page shows the three existing remote MP4 videos and their headings are exactly 🤭, 🤐, and \"Am I in Love with You? Definitely\" (in that order).",
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Final Message page textarea is pre-filled with the provided final message text including the line breaks at the end.",
+        "Existing remote restore (saveId-based), global-latest restore, and local fallback restore behaviors continue to work unchanged (i.e., saved content overrides these defaults when present)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add clear, touch-friendly navigation wiring for all steps (Landing → Videos → Final Message), including back/step navigation affordances. Adjust fixed-position UI (e.g., save control placement) to avoid overlapping primary actions on small screens using existing shadcn-ui Button styling where applicable; verify the component's usage instructions before implementing."
-        },
+          "description": "Change ONLY the useState default initializers for landingMessage, videoSlots headings (keep file: null and the exact existing remote MP4 URLs), and finalMessage to match the required provided defaults; ensure no other user-facing text or existing save/restore, polling, navigation, and UI wiring is altered."
+        }
+      ]
+    },
+    {
+      "id": "REQ-40",
+      "summary": "Add brief inline comments near the modified App.tsx state initializers clarifying they are fallback defaults used only before restore/hydration.",
+      "acceptanceCriteria": [
+        "`frontend/src/App.tsx` contains short, clear comments near `landingMessage`, `videoSlots`, and `finalMessage` initializers indicating they are fallback defaults before restore/hydration.",
+        "No new functionality is introduced; comments do not change runtime behavior."
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/components/StepNavigation.tsx",
-          "operation": "create",
-          "description": "Create a compact responsive step navigation component (Landing / Videos / Final Message) with accessible buttons and current-step indication. Compose existing shadcn-ui Button styles; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/LandingPage.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Replace any potentially obstructive fixed navigation controls with layout-based navigation that remains reachable on mobile (comfortable padding, no overlap with other fixed UI). Use existing shadcn-ui Button; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/VideosPage.tsx",
-          "operation": "modify",
-          "description": "Update the video grid to adapt across breakpoints (single column on small screens; multi-column on larger screens) and ensure video controls never clip/overflow. Keep <video controls> visible and functional; use existing shadcn-ui components for surrounding UI; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/FinalMessagePage.tsx",
-          "operation": "modify",
-          "description": "Add or wire navigation controls so users can move intuitively through the 3-page flow (including returning to previous steps) without relying on hidden gestures. Use existing shadcn-ui Button; verify the component's usage instructions before implementing."
+          "description": "Add concise inline comments adjacent to the landingMessage, videoSlots, and finalMessage initializers noting these values are initial fallback defaults used only when no remote saveId restore, global-latest restore, or local saved progress is available; do not introduce any behavior changes."
         }
       ]
     }

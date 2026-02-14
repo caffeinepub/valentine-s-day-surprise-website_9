@@ -1,77 +1,53 @@
 {
   "kind": "build_request",
-  "title": "Mirror reference webpage styling and polish the featured videos section",
+  "title": "Update App.tsx initial in-memory Valentine content (landing message, video headings, final message)",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-36",
-      "text": "Mirror the design and layout of the reference webpage at https://apshara-wes.caffeine.xyz/#caffeineAdminToken=82696d0f77374658286ae9585e99fd26e1acce8a0386456642a7084c58cb7d7b across the 3-page Valentine site by aligning color usage, typography, spacing, and component styling to match the reference as closely as possible without copying copyrighted assets verbatim.",
+      "id": "REQ-39",
+      "text": "In `frontend/src/App.tsx`, replace the current implementation of the component’s initial in-memory content with the user-provided “New Code” values, specifically updating only the default state initializers while keeping all existing save/restore, polling, navigation, and UI wiring intact.\n\nRequired default values:\n- `landingMessage` default: `\"Happy Valentine's Day, Apshara!\"`\n- `videoSlots` defaults (keep the same remote MP4 URLs, `file: null`, but change headings):\n  1) heading: `\"🤭\"`, url: `https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4`\n  2) heading: `\"🤐\"`, url: `https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4`\n  3) heading: `\"Am I in Love with You? Definitely\"`, url: `https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4`\n- `finalMessage` default: set exactly to the provided multiline text:\n  `\"Happy Valentine’s Day, Flora. I’ve been feeling terrible about last night, and I’m so sorry for how I acted. You deserve to be treated with nothing but love, especially today. I’m incredibly lucky to have you, and I’d love to make it up to you and focus on us. I love you\\nthis alr?\\n\"`\n\nDo not change any other user-facing text in the app outside these defaults.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-1"
         ],
         "quotes": [
-          "Your task is to create a new website that mirrors the design and layout of the provided webpage."
+          "Your task is to modify the code in the App.tsx file by replacing the current implementation with the following code snippet ... (New Code)"
         ]
       },
       "acceptanceCriteria": [
-        "Landing, Videos, and Final Message pages present a cohesive visual system that matches the reference page’s overall layout and styling (colors, spacing, typographic scale, component shapes)",
-        "No third-party/copyrighted images, icons, or proprietary brand marks from the reference are copied directly into the new site",
-        "All user-facing text remains in English"
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Landing page text field is pre-filled with \"Happy Valentine's Day, Apshara!\".",
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Videos page shows the three existing remote MP4 videos and their headings are exactly 🤭, 🤐, and \"Am I in Love with You? Definitely\" (in that order).",
+        "On a fresh load with no remote saveId in the URL and no existing local saved progress, the Final Message page textarea is pre-filled with the provided final message text including the line breaks at the end.",
+        "Existing remote restore (saveId-based), global-latest restore, and local fallback restore behaviors continue to work unchanged (i.e., saved content overrides these defaults when present)."
       ]
     },
     {
-      "id": "REQ-37",
-      "text": "Update the Videos page section header and surrounding copy to reflect a clear ‘Featured Videos’ section while continuing to prominently embed the three provided MP4 URLs as the only video sources.",
+      "id": "REQ-40",
+      "text": "Add brief inline comments in `frontend/src/App.tsx` adjacent to the modified state initializers explaining that these values are the initial defaults used only when no remote/global/local saved state is available, so future refactors do not accidentally treat them as hard-coded overrides.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-1"
         ],
         "quotes": [
-          "Example of how the video section might be structured:  - Video Section Title: \"Featured Videos\"",
-          "The video section of the new website should prominently feature the three provided video URLs."
+          "The output should be structured as a clear, well-commented code block, ensuring that the changes made are easily understandable. Additionally, include a brief explanation of the modifications and the reasons behind them."
         ]
       },
       "acceptanceCriteria": [
-        "Videos page displays the section title exactly as: “Featured Videos”",
-        "The three embedded videos use these exact URLs as sources: https://image2url.com/r2/default/videos/1771095915401-63c93159-e8fd-4bbb-b597-ec2f0c851aae.mp4, https://image2url.com/r2/default/videos/1771096125343-9f368017-cf72-4a89-a32a-82afbda31671.mp4, https://image2url.com/r2/default/videos/1771096462549-283a08bb-3e21-4aed-bedc-66811ea1f837.mp4",
-        "No UI is present that allows local video file uploads or replacing the provided URLs"
-      ]
-    },
-    {
-      "id": "REQ-38",
-      "text": "Ensure the overall site experience is responsive and intuitive across mobile, tablet, and desktop, including navigation between Landing → Videos → Final Message and a video grid/layout that adapts cleanly to different screen sizes.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "Ensure that the website is responsive and compatible with various devices. Pay attention to the user experience, making navigation seamless and intuitive."
-        ]
-      },
-      "acceptanceCriteria": [
-        "On small screens, videos are displayed in a single-column layout with readable headings and comfortable spacing",
-        "On larger screens, the videos use a multi-column/grid layout without overflow or clipped controls",
-        "Primary navigation controls remain easy to discover and activate on touch devices (no overlapping fixed elements blocking actions)",
-        "Videos remain playable with visible controls on Chrome, Firefox, Safari, and Edge"
+        "`frontend/src/App.tsx` contains short, clear comments near `landingMessage`, `videoSlots`, and `finalMessage` initializers indicating they are fallback defaults before restore/hydration.",
+        "No new functionality is introduced; comments do not change runtime behavior."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files in frontend/immutablePaths (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui). Compose existing UI components instead.",
-    "Use English for any user-facing text.",
-    "Do not introduce third-party libraries outside the existing stack (React + TypeScript, Tailwind, shadcn, React Query).",
-    "Do not copy proprietary/copyrighted assets from the reference webpage; only recreate the look-and-feel using original styling and standard components.",
-    "Keep the three provided MP4 URLs exactly as provided; do not alter or proxy them through the backend."
+    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, and anything under `frontend/src/components/ui`.",
+    "Keep the existing save/restore, polling, and navigation logic intact; only update initial default state values and add clarifying comments."
   ],
   "nonGoals": [
-    "Reintroducing local video upload functionality on the Videos page",
-    "Adding new backend persistence APIs or changing Motoko data models for this request",
-    "Implementing new authentication providers beyond Internet Identity",
-    "Pixel-perfect duplication of any copyrighted graphics or branding from the reference site"
+    "Do not redesign UI styling, layout, or navigation behavior.",
+    "Do not change backend APIs, Motoko canister logic, or remote save/restore protocol.",
+    "Do not modify the three remote MP4 URLs or reintroduce local video upload behavior."
   ],
   "imageRequirements": {
     "required": [],
